@@ -1,0 +1,36 @@
+---
+title: "Causal_Analysis_Paper"
+author: "Ángela Duarte Pardo"
+date: "5/23/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(dagitty)
+library(ggdag)
+```
+
+##    Causal Design 
+
+
+
+```{r}
+dag  <- dagify(MMrates ~ laws,
+               MMrates ~ GDP,
+               MMrates ~ literacy,
+               laws ~ GDP,
+               laws~literacy
+               )
+ggdag(dag) +  theme_dag_blank()
+```
+
+
+
+
+
+
+
+
+
