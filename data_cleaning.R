@@ -77,4 +77,28 @@ grounds2011 <- grounds2011 %>% mutate("sum_grounds"=as.numeric(save_life)+as.num
 #Dataset containing world abortion policies as of 2021 
 # (Source: UN: https://abortion-policies.srhr.org/)
 
+grounds2022 <- read_excel("Data/Grounds2022.xlsx", na = " ") %>% clean_names()
 
+grounds2022 <- grounds2022 %>%    
+  rename("save_life"= x1a_to_save_a_woman_s_life_yes_no_law_varies_by_jurisdiction, 
+         "health"=x1b_to_preserve_a_woman_s_health_yes_no_law_varies_by_jurisdiction,
+         "physical_health"=x1c_to_preserve_a_woman_s_physical_health_yes_no_law_varies_by_jurisdiction, 
+         "mental_health"=x1d_to_preserve_a_woman_s_mental_health_yes_no_law_varies_by_jurisdiction,
+         "cognitive_disability"=x1e_in_cases_of_intellectual_or_cognitive_disability_of_the_woman_yes_no_law_varies_by_jurisdiction,
+         "incest"=x1f_in_cases_of_incest_yes_no_law_varies_by_jurisdiction, 
+         "rape"=x1g_in_cases_of_rape_yes_no_law_varies_by_jurisdiction,
+         "foetal_imp"=x1h_in_cases_of_foetal_impairment_yes_no_law_varies_by_jurisdiction,
+         "socioec"=x1i_for_economic_or_social_reasons_yes_no_law_varies_by_jurisdiction, 
+         "other"=x1k_other_please_specify) 
+
+
+
+grounds2022[grounds2022 == "Yes"] <- "1"
+grounds2022[grounds2022 == "No"] <- "0"
+grounds2022[grounds2022 == "Law Varies By Jurisdiction"] <- "0.5"
+grounds2022[grounds2022 == is.na(grounds2022)] <- 0
+
+grounds2022 <- grounds2022 %>% mutate("sum_grounds2022"=as.numeric(save_life)+ as.numeric(health)+as.numeric(physical_health)+
+                                        as.numeric(mental_health)+as.numeric(cognitive_disability)+as.numeric(rape)+as.numeric(incest)+
+                                        as.numeric(foetal_imp)+
+                                        as.numeric(socioec))  
