@@ -43,7 +43,9 @@ maternal_mortality_17 <-
 #Maternal Mortality until 2021 per age group
 maternal_mortality_21 <-read.csv("Data/MortalityDatabase2021.csv", sep = ";") 
 maternal_mortality_21 <- maternal_mortality_21 %>% clean_names() %>% 
-  select(country_name, year, age_group_code, number, percentage_of_cause_specific_deaths_out_of_total_deaths, death_rate_per_100_000_population)
+  select(country_name, year, age_group_code, number, sex,
+         percentage_of_cause_specific_deaths_out_of_total_deaths, death_rate_per_100_000_population) %>% 
+  filter(age_group_code=="Age_all")
   
 ## ---------------------------
 ## 2.Importing the Global Abortion Policies Datasets
@@ -54,3 +56,25 @@ laws <- read_excel("Data/laws.xlsx", na = "na")
 
 #Dataset containing Abortion incidence in the world (Source:https://osf.io/6t4eh/)
 incidence <- read.csv("Data/AbortionIncidence.csv")
+
+#Dataset containing types of abortion regulation gathered in 2013, but 
+#from 2011 (Source: UN: https://abortion-policies.srhr.org/)
+grounds2011 <- read_excel("Data/AbortionGrounds2013.xlsx", na = "na")
+
+grounds2011 <- grounds2011 %>%  clean_names() %>% na_if("..") %>% 
+  rename("save_life"=to_save_a_womans_life_2011_1, "physical_health"=to_preserve_a_womans_physical_health_2011_2, 
+         "mental_health"=to_preserve_a_womans_mental_health_2011_3, "rape_incest"=in_case_of_rape_or_incest_2011_4,
+         "foetal_imp"=because_of_foetal_impairment_2011_5, "socioec"=for_economic_or_social_reasons_2011_6, 
+         "on_request"=on_request_2011_7) 
+
+grounds2011[grounds2011 == "X"] <- "1"
+grounds2011[grounds2011 == "-"] <- "0"
+
+grounds2011 <- grounds2011 %>% mutate("sum_grounds"=as.numeric(save_life)+as.numeric(physical_health)+
+                                        as.numeric(mental_health)+as.numeric(rape_incest)+as.numeric(foetal_imp)+
+                                        as.numeric(socioec)+as.numeric(on_request))  
+
+#Dataset containing world abortion policies as of 2021 
+# (Source: UN: https://abortion-policies.srhr.org/)
+
+
