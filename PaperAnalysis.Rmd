@@ -1,6 +1,6 @@
 ---
 title: "Causal_Analysis_Paper"
-author: "Ángela Duarte Pardo"
+author: "Helena Bakic, Anna-Lisa Wirth, Ángela Duarte Pardo"
 date: "5/23/2022"
 output: html_document
 ---
@@ -12,7 +12,15 @@ library(dagitty)
 library(ggdag)
 ```
 
-##    Causal Design 
+
+## Description of the original paper
+
+### Research objective
+
+### Datasets
+
+
+##    Causal Design of the original paper
 
 
 
@@ -28,7 +36,7 @@ ggdag(dag) +  theme_dag_blank()
 
 
 
-
+## Results of the original paper
 
 
 

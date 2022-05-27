@@ -43,7 +43,7 @@ maternal_mortality_17 <-
   select(country, year, mortality_ratio, number_deaths)
 
 
-#Maternal Mortality until 2021 (source )
+#Maternal Mortality until 2021 (source: https://platform.who.int/mortality/themes/theme-details/topics/topic-details/MDB/maternal-conditions )
 maternal_mortality_21 <-read.csv("Data/MortalityDatabase2021.csv", sep = ";") 
 maternal_mortality_21 <- maternal_mortality_21 %>% clean_names() %>% 
   select(country_name, year, age_group_code, number, sex,
