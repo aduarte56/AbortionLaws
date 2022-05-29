@@ -14,10 +14,15 @@ library(ggdag)
 
 
 ## Description of the original paper
-
-### Research objective
+Latt, Milner and Kavanagh present the results of their ecological study on the effects of abortion laws on maternal mortality in their paper "Abortion laws reform may reduce maternal mortality: an ecological study in 162 countries." 
 
 ### Datasets
+The authors used a time-indexed dataset of maternal mortality from 1985 to 2015  
+
+To assess the effect of flexibility of abortion laws on on maternal mortality, the authors create an aggregate flexibility index [1-7] calculated based on the sum of the grounds on which abortion is permitted in every country
+
+Description of Covariates.
+
 
 
 ##    Causal Design of the original paper
@@ -36,9 +41,26 @@ ggdag(dag) +  theme_dag_blank()
 
 
 
-## Results of the original paper
 
 
+
+
+
+# References
+
+## Original paper
+- Latt, S.M., Milner, A. & Kavanagh, A.(2019) Abortion laws reform may reduce maternal mortality: an ecological study in 162 countries. BMC Women's Health 19, 1. https://doi.org/10.1186/s12905-018-0705-y
+
+## Origital paper datasets
+-   UN (2013). Population division. World Abortion policies 2013.  [Accessible here](https://www.un.org/en/development/desa/population/publications/policy/world-abortion-policies-2013.asp)
+
+
+## Updated datasets
+- WHO. (2022). Global Abortion Policies Worldwide. [Accessible here](https://abortion-policies.srhr.org/)
+
+- 
+
+## Other Resources
 
 
 

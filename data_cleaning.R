@@ -23,7 +23,7 @@ library(countrycode)
 #Maternal Mortality until 2017 no data on age groups (source: )
 maternal_mortality_17 <-read.csv("Data/MMortalityWHO_2017.csv") 
 
-#
+#Changes column names and separates some entries
 maternal_mortality_17 <- maternal_mortality_17 %>% clean_names() %>% 
   cbind(str_split_fixed(maternal_mortality_17$Maternal.mortality.ratio..per.100.000.live.births.,"\\[", 2)) %>%
   rename("mortality_ratio"="1", "mortality_treshold"= "2") %>% 
@@ -32,7 +32,7 @@ maternal_mortality_17 <- maternal_mortality_17 %>% clean_names() %>%
   select(-c(maternal_mortality_ratio_per_100_000_live_births,number_of_maternal_deaths))
 
 
-
+#Cleans up the entries that have information of two variables.
 maternal_mortality_17 <- 
   maternal_mortality_17 %>%  mutate(mortality_ratio=str_remove_all(maternal_mortality_17$mortality_ratio, " "),
                                     mortality_treshold=str_remove_all(maternal_mortality_17$mortality_treshold, "\\]"),
