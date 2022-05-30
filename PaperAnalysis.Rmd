@@ -15,9 +15,10 @@ library(ggdag)
 
 ## Description of the original paper
 
+In "Abortion laws reform may reduce maternal mortality: an ecological study in 162 countries," Latt, Milner and Kavanagh present the results of a study that aims to assess whether maternal mortality is affected by the flexibility of abortion laws. 
+
 
 ##  The causal design of the original paper
-
 
 
 ```{r}
@@ -39,19 +40,27 @@ ggdag(dag) +  theme_dag_blank()
 
 # References
 
-## Original paper
+## Original Paper
 - Latt, S.M., Milner, A. & Kavanagh, A.(2019) Abortion laws reform may reduce maternal mortality: an ecological study in 162 countries. BMC Women's Health 19, 1. https://doi.org/10.1186/s12905-018-0705-y
 
-## Origital paper datasets
+## Datasets
+### Origital paper datasets
 -   UN (2013). Population division. World Abortion policies 2013.  [Accessible here](https://www.un.org/en/development/desa/population/publications/policy/world-abortion-policies-2013.asp)
 
-
-## Updated datasets
+### Updated datasets
 - WHO. (2022). Global Abortion Policies Worldwide. [Accessible here](https://abortion-policies.srhr.org/)
 
 - WHO. (2022). Maternal Mortality Database.[Accessible here:](https://platform.who.int/mortality/themes/theme-details/topics/topic-details/MDB/maternal-conditions)
 
-## Other Resources
+### Other Data sets
 
+-	OSF. (2020). Global abortion Incidence (https://osf.io/6t4eh/)
+
+- - WHO. (2022). Global Abortion Laws. [Accessible here](https://abortion-policies.srhr.org/)
+
+-	Health system. (https://apps.who.int/nha/database), hospital beds (https://data.worldbank.org/indicator/SH.MED.BEDS.ZS)
+-	Economic: GPD, human capital (education, as in Jensen paper), poverty (https://data.worldbank.org/indicator/SI.POV.NAHC), GINI (https://data.worldbank.org/indicator/SI.POV.GINI)
+
+- life expectancy at birth (https://data.worldbank.org/indicator/SP.DYN.LE00.IN) 
 
 

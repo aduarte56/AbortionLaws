@@ -94,6 +94,7 @@ grounds2022 <- grounds2022 %>%
          "rape"=x1g_in_cases_of_rape_yes_no_law_varies_by_jurisdiction,
          "foetal_imp"=x1h_in_cases_of_foetal_impairment_yes_no_law_varies_by_jurisdiction,
          "socioec"=x1i_for_economic_or_social_reasons_yes_no_law_varies_by_jurisdiction, 
+         "on_request"=x1j_on_request_yes_no_law_varies_by_jurisdiction,
          "other"=x1k_other_please_specify,
          "national_jurisdiction"=country) %>% 
   mutate(country=countrycode(iso_code, origin = 'iso2c', destination = 'country.name'))
@@ -101,10 +102,10 @@ grounds2022 <- grounds2022 %>%
 grounds2022[grounds2022 == "Yes"] <- "1"
 grounds2022[grounds2022 == "No"] <- "0"
 grounds2022[grounds2022 == "Law Varies By Jurisdiction"] <-"0.5"
-grounds2022[6:14] <- lapply(grounds2022[6:14], as.numeric)
+grounds2022[6:15] <- lapply(grounds2022[6:15], as.numeric)
 
 #Adding the grounds into a flexibility aggregated variable
-grounds2022 <- grounds2022 %>% mutate("sum_grounds2022"=rowSums(grounds2022[6:14], na.rm=TRUE))
+grounds2022 <- grounds2022 %>% mutate("sum_grounds2022"=rowSums(grounds2022[6:15], na.rm=TRUE))
 
 #Setting a column for year, date and month of the latest abortion policy per country.
 grounds2022 <- grounds2022 %>% mutate(date_completed=dmy(date_completed)) %>% 
@@ -113,3 +114,26 @@ grounds2022 <- grounds2022 %>% mutate(date_completed=dmy(date_completed)) %>%
   relocate(c(year_completed, month_completed,day_completed), .after = date_completed)
 
 
+
+## ---------------------------
+## 3.Other Datasets
+## ---------------------------
+
+#Indicators dataset (still in need of a long format!)
+indicators <- read_excel("Data/Indicators_Modified.xlsx", na = " ") %>% clean_names()
+
+
+
+#Other restrictions that women may face when trying to get an abortion (still needs some cleaning up!)
+other_restrictions <- read_excel("Data/AdditionalRestrictionsModified.xlsx", na = " ") %>% clean_names()
+
+other_restrictions[other_restrictions == "Yes"] <- "1"
+other_restrictions[other_restrictions == "No"] <- "0"
+other_restrictions[other_restrictions == "Restriction Varies By Jurisdiction"] <-"0.5"
+
+
+#Dataset on some clinical aspects of abortion access (who performs the abortion, government issued guidelines, etc.)
+clinical_aspects<-  read_excel("Data/ClinicalAspectsAbortionCare_modified.xlsx", na = " ") %>% clean_names()
+
+clinical_aspects[clinical_aspects == "No"] <- "0"
+clinical_aspects[clinical_aspects == "Restriction Varies By Jurisdiction"] <-"0.5"
