@@ -1,8 +1,9 @@
 ---
-title: "Causal_Analysis_Paper"
+title: "Causal Analysis Paper"
 author: "Helena Bakic, Anna-Lisa Wirth, Ángela Duarte Pardo"
 date: "5/23/2022"
 output: html_document
+bibliography: references.bib
 ---
 
 ```{r setup, include=FALSE}
@@ -12,13 +13,30 @@ library(dagitty)
 library(ggdag)
 ```
 
+## Introduction
+
+Introduction on abortion laws and motivation
 
 ## Description of the original paper
 
-In "Abortion laws reform may reduce maternal mortality: an ecological study in 162 countries," Latt, Milner and Kavanagh present the results of a study that aims to assess whether maternal mortality is affected by the flexibility of abortion laws. 
+In "Abortion laws reform may reduce maternal mortality: an ecological study in 162 countries," @Latt2019 present the results of a study that aims to assess whether maternal mortality is affected by the flexibility of abortion laws. Abortion law flexibility was measured as a sum of the number of reasons for which abortion is legally allowed (ranging from 0 to 7) and was included in models as both an ordinal variable and a binary variable (inflexible vs. flexible abortion laws). Abortion laws were considered inflexible if there were less than 3 legal grounds for abortion. Maternal mortality ratio (MMR) was measured as the number of maternal deaths per 100,000 live births. Authors used fixed effects linear regression models to estimate the relationship between abortion law flexibility and MMR, while controlling for GDP per capita and time in five-year intervals. Additional analysis included also female primary education completion as a control variable as it had over 50% of missing data; however, results did not change. Results indicated that maternal deaths reduce by 45 per 100,000 live births (95% CI: -64, -26) with flexible abortion laws. Authors conclude that abortion law reform in countries with inflexible abortion laws may reduce maternal mortality.    
 
 
-##  The causal design of the original paper
+##  Methodology
+
+### Theorethical estimands
+
+Theoretical estimand is a key part of a research question, as it describes the quantity of interest independently of statistical models and clearly describes the research goal [@Lundberg2021]. In the current paper, the theorethical estimand was not specifically stated; however, we tried to deduce the desired estimand from the research goal and the estimation strategy they used.
+
+The authors state that they aim to “estimate the association between the flexibility of abortion laws and maternal mortality at a country level [between 1985 and 2013]” [@Latt2019, pg. 2]. Furthermore, they estimated the model using linear regression, and the quantity they have estimated was the regression coeffitient of MMR on flexibility of the law. Therefore, we we believe that the authors wanted to assess the average treatment effect (ATE), that is, the difference in the number of maternal deaths that would occur within a country if abortion law was flexible ($Y_i$ = 1) versus inflexible ($Y_i$ = 0):
+
+$$
+ATE = \frac{1}{n}\sum_{i=1}^{n}(Y_i^1 - Y_i^0) = \frac{1}{n}\sum_{i=1}^{n}\Delta Y_i = \mathbb{E} [\Delta Y]
+$$
+This estimand looks at counterfactual outcomes for all countries, regardless of the fact that the particular country would in reality receive treatment or not.
+
+
+### Identification
 
 
 ```{r}
@@ -31,7 +49,13 @@ dag  <- dagify(MMrates ~ laws,
 ggdag(dag) +  theme_dag_blank()
 ```
 
+### Heterogeinity of effects
 
+### Unmeasured confounding
+
+### Missing data
+
+## Conclusion 
 
 
 
@@ -39,9 +63,6 @@ ggdag(dag) +  theme_dag_blank()
 
 
 # References
-
-## Original Paper
-- Latt, S.M., Milner, A. & Kavanagh, A.(2019) Abortion laws reform may reduce maternal mortality: an ecological study in 162 countries. BMC Women's Health 19, 1. https://doi.org/10.1186/s12905-018-0705-y
 
 ## Datasets
 ### Origital paper datasets
@@ -62,5 +83,7 @@ ggdag(dag) +  theme_dag_blank()
 -	Economic: GPD, human capital (education, as in Jensen paper), poverty (https://data.worldbank.org/indicator/SI.POV.NAHC), GINI (https://data.worldbank.org/indicator/SI.POV.GINI)
 
 - life expectancy at birth (https://data.worldbank.org/indicator/SP.DYN.LE00.IN) 
+
+###Text
 
 
