@@ -24,6 +24,7 @@ In "Abortion laws reform may reduce maternal mortality: an ecological study in 1
 
 ##  Methodology
 
+
 ### Theorethical estimands
 
 Theoretical estimand is a key part of a research question, as it describes the quantity of interest independently of statistical models and clearly describes the research goal [@Lundberg2021]. In the current paper, the theorethical estimand was not specifically stated; however, we tried to deduce the desired estimand from the research goal and the estimation strategy they used.
@@ -39,6 +40,7 @@ This estimand looks at counterfactual outcomes for all countries, regardless of 
 ### Identification
 
 
+
 ```{r}
 dag  <- dagify(MMrates ~ laws,
                MMrates ~ GDP,
@@ -49,12 +51,15 @@ dag  <- dagify(MMrates ~ laws,
 ggdag(dag) +  theme_dag_blank()
 ```
 
+<<<<<<< HEAD
 ### Heterogeinity of effects
 
 ### Unmeasured confounding
 
 ### Missing data
 
+=======
+>>>>>>> 2390f3bced1f46e03a643063dda253b0010c6416
 ## Conclusion 
 
 
