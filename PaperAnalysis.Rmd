@@ -166,7 +166,7 @@ Testing for those different possible scenarios would be possible with sensitivit
 
 A possible model for future research could be:
 
-![Figure 1.: Causal model as recreated from @Latt2019 ](Figures/DAG_4.png)
+![Figure 1.: Suggested causal model for future research ](Figures/DAG_4.png)
 
 ```{r}
  testImplications <- function( covariance.matrix, sample.size ){
