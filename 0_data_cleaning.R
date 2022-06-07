@@ -329,11 +329,6 @@ primary_completion <- primary_completion %>%
   select(-country_name)
 
 
-ggplot(data=primary_completion %>% group_by(country_code), aes(x=year, y=primary_completion)) +
-  geom_line(data=primary_completion, aes(color=country_code))+
-  geom_point(alpha=0.5)
-
-
 #------------------------------------------------------------------------------
 # female literacy dataset
 #-----------------------------------------------------------------------------
