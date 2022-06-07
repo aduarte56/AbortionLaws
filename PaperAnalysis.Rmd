@@ -16,9 +16,9 @@ library(ggdag)
 
 \newcommand{\indep}{\perp \!\!\! \perp}
 
-# Introduction
+# Background
 
-Introduction on abortion laws and motivation
+Abortion law and the negative consequences of the lack of safe abortions are highly contentious policy issues that have been making headlines this year. Further, the Sustainable Development Goal indicator 3.1 of the United Nations to reduce Maternal Death to less than 70 per 100000 life birth by 2030 (https://www.who.int/data/gho/indicator-metadata-registry/imr-details/26) is relying on access to safe and legal abortions. In the paper we are analysing the authors are testing whether and if so to what extent abortion law as a proxy for access to safe abortions causally effects maternal mortality rates in over 160 countries around the globe. Establishing a causal relation could strengthen the implementation of abortion liberalisation policy. This is especially needed in a time where several states already withdrew or are withdrawing access to safe abortions on many grounds such as Poland (https://www.amnesty.org/en/latest/news/2021/10/poland-a-year-on-abortion-ruling-harms-women/) and the USA (https://www.euronews.com/2022/05/03/us-supreme-court-moving-to-overturn-key-abortion-rights-law-says-leaked-report). While on the other hand there are developments like for instance in France to expand abortion rights (https://www.hrw.org/news/2022/03/01/france-expands-abortion-access-two-key-moves) in 2022. So does abortion law flexibility cause maternal mortality? We will be taking a close critical look at a paper that tries to establish exactly that and also run our own data analysis to address this question.
 
 # Description of the original paper
 
