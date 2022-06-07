@@ -184,7 +184,6 @@ Finally, the third requirement is the stable unit treatment value assumption (SU
 ## Empirical estimation
 
 
-
 ###Heterogeinity of effects
 
 ###G-separation
