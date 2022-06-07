@@ -15,6 +15,9 @@ library(lubridate)
 library(countrycode)
 library(MatchIt)
 library(fixest) # for fixed effect regression estimation
+library(sensemakr)
+
+source("0_data_cleaning.R")
 
 # Reading the dataset
 df1 <- read_csv("Data/final_dataset.csv")
@@ -34,6 +37,9 @@ summary(model)
 #gdp, countries and periods
 model1 <- lm(data=df1, mortality_ratio_17~flex_binary_score+gdp+country_name+period)
 summary(model1)
+
+model2 <- lm(data=df, mortality_ratio_17~flex_binary_score+gdp+primary_completion+country_name+period)
+summary(model2)
 
 ###############################################################################
 ##
@@ -64,11 +70,11 @@ ATE<-Y1-Y0
 df.flex_score0 <- df.flex_score0 %>% mutate(observed_bin_score=df1$flex_binary_score)
 df.flex_score1<- df.flex_score1 %>% mutate(observed_bin_score=df1$flex_binary_score)
 
-df_T0 <- df.flex_score0 %>% filter(observed_bin_score==1)
-df_T<-df1 %>% filter(flex_binary_score==1)
-Y_T0<-predict(model1,newdata=df_T0) 
-Y_T1<-predict(model1,newdata=df_T)
-ATT<-Y_T0-Y_T1
+df_T0 <- df.flex_score0 %>% filter(observed_bin_score==1) #imputed results for treatment 0 for those who were treated
+#df_T<-df1 %>% filter(flex_binary_score==1)
+Y_T0<-predict(model1,newdata=df_T0) # prediction for imputed treatment 0
+#Y_T1<-predict(model1,newdata=df_T)
+ATT<-mean(Y_T0-df_T0$mortality_ratio_17) # difference between prediction and results
 ##Calculating ATU using G-separation
 
 df_U <- df1 %>% filter(flex_binary_score==0)
@@ -77,13 +83,32 @@ Y_U0.S1<-predict(model1,newdata=df_U)
 Y_U.S1<-predict(model1,newdata=df_U1)
 ATU<-Y_U0.S1-Y_U.S1
 
+
+df_T1 <- df.flex_score0 %>% filter(observed_bin_score==0) #imputed results for treatment 0 for those who were treated
+#df_T<-df1 %>% filter(flex_binary_score==1)
+Y_T1<-predict(model1,newdata=df_T1) # prediction for imputed treatment 0
+#Y_T1<-predict(model1,newdata=df_T)
+ATU<-mean(Y_T1-df_T1$mortality_ratio_17)
 #------------------------------------------------------------------------------
 # Sensitivity Analysis
 #______________________________________________________________________________
+df1.sensitivity <- sensemakr(model = model1, 
+                                treatment = "flex_binary_score", # the treatment
+                                benchmark_covariates = "gdp", # covariates that could be used to bound
+                                kd = 1:3) # here we want to investigate the maximum strength of a confounder once,twice and three times as strong as female in explaining treatment and outcome variance
+summary(df1.sensitivity)
+
+plot(df1.sensitivity)
 
 
 
+df.sensitivity <- sensemakr(model = model2, 
+                            treatment = "flex_binary_score", # the treatment
+                            benchmark_covariates = "primary_completion", # covariates that could be used to bound
+                            kd = 1:3) # here we want to investigate the maximum strength of a confounder once,twice and three times as strong as female in explaining treatment and outcome variance
+summary(df.sensitivity)
 
+plot(df.sensitivity)
 #------------------------------------------------------------------------------
 # Heterogeneity of effects (lab4)
 #______________________________________________________________________________

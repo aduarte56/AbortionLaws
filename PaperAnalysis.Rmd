@@ -241,12 +241,28 @@ $Y_1$ for exposed and $Y_0$ for unexposed. Generating counterfactual outcomes fo
 
 
 # Analysis
+Our empirical exploration had two main objectives: 1. to reproduce the methodology of the original paper with updated data on the same, 2. to compare the result thus obtained with some other methods that address the assumptions not met by the original paper. 
 
-* Dataset description
+* The updated dataset
+Although the datasets used in the original paper were hosted in public websites, the currently available version is not exactly the same. Since both the abortion policies and the maternal mortality sets are now hosted in interactive webpages, it was hard to access the aggregated and historical data from both abortion policies and maternal mortality rates between 1985-2013. Despite these restrictions, we collected data on all the relevant variables from 2000 to 2017. The maternal mortality data was accessed in the World Bank Data repository[@MMR], and the global abortion policies were found in the UN Department for Economic and Social Affairs archive [@WorldAbortionPolicies].
+
+As in the original dataset, the Maternal mortality ratio (MMR) was measured as the number of maternal deaths per 100,000 live births and legal grounds for abortion where coded as binary variables ("1" for countries that legally allow for abortion on that ground; "0" for those that don't). We also calculated an aggregated and ordinal flexibility score for abortion by adding the legal grounds together. 
+
+Unlike the authors, our binary flexibility of abortion policies variable is slightly more stringent: since the median of the abortion grounds calculated every 3 years is approximately 4 in average, we determined that abortion laws are inflexible if countries allow for less than 4 legal grounds for abortion.
+
+*[Add table showing median per period.]*
+
 * Regression ATE
+In the first part of our exploration, we followed the methodology of the original paper and used fixed effects linear regression models to estimate the relationship between abortion law flexibility and MMR. We controlled for GDP per capita, time in three-year intervals, and country-specific effects through a factor country-name variable. According to our results, flexible abortion laws reduce maternal deaths by 57 per 100.000 live births [ADD TABLE]. This result is close enough to the original result, which found that maternal deaths reduce by 45 per 100,000 live births (95% CI: -64, -26) with flexible abortion laws. 
+We also conducted added "female primary education completion" as a control variable, and found very similar result: the effect of abortion law flexibility on maternal mortality appears to be a reduction in the mortality rate of 53 deaths per 100.000 live births.
+
+
+
 * Heterogeinity of effects
-* Unmeasured confounding
+
 * G-separation ATE, ATU, ATT
+
+* Unmeasured confounding
 
 
 # Conclusion 
