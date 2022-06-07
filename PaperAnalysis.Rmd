@@ -37,6 +37,7 @@ The authors state that they aim to “estimate the association between the flexi
 $$
 ATE = \frac{1}{n}\sum_{i=1}^{n}(MMR_i^1 - MMR_i^0) = \frac{1}{n}\sum_{i=1}^{n}\Delta MMR_i = \mathbb{E} [\Delta MMR]
 $$
+
 This estimand looks at counterfactual outcomes for all countries, regardless of the fact that the particular country would in reality receive treatment or not. Country $i$'s MMR when abortion laes are flexible is denoted as $MMR_i^{(L=1)}$ or shortly $MMR_i^{(1)}$, and as $MMR_i^{(L=0)}$ or $MMR_i^{(0)}$ when abortion laws are inflexible. Individual causal effect for the country $i$ is then the difference between mortality when abortion laws are flexible vs. when they are inflexible, or $ΔMMR_i = MMR_i^{(1)} - MMR_i^{(0)}$. Individual effects averaged across all of the countries in the world would then give the wanted causal quantity. This is equal to the expectation of the effect of flexible abortion laws on MMR of a randomly selected country. 
 
 As ATE reflects the effect of the treatment for the entire study population, it can be particularly useful for scoping the benefit of population-wide policies. However, as there will be inevitable self-selection to treatment in case of abortion policies -- some countries will choose to have more flexible laws and some will choose less flexible laws -- there are other estimands that could potentially be interesting for researchers in this particular case.
@@ -46,6 +47,7 @@ In fact, one interpretation of the results that authors give is that "it is poss
 $$
 ATU = \mathbb{E}[MMR^{(1)} - MMR^{(0)} \mid L = 0]
 $$
+
 ATU shows how the outcome would differ if untreated units were actually treated, in other words, the effect of expanding the treatment. This could potentially be the most useful estimand in this study, as it could be used in considering the expansion of a medical practice to units that were previously untreated [@greifer2021].  
 
 Another potentially interesting estimand is the ATT, that is, the effect of the treatment for the population of units that actually received the treatment:
@@ -106,15 +108,35 @@ which means that the causal effect of Law on MMR can be estimated. Conditioning 
 knitr::include_graphics(c("Figures/dag2a.png","Figures/dag2b.png"))
 ```
 
-However, in observational studies, the causal effect is identified only when we control for all counfounders. If there is unobserved counfounding (Figure2b), the causal effect can't be identified as: 
+However, in observational studies, the causal effect is identified only when we control for all counfounders. If there is unobserved counfounding (Figure2b), the causal effect can't be identified as:
+
 $$
 MMR^{(1)}, MMR^{(0)} \indep Law \mid Female \ primary \ education, GDP, Unmeasured \ counfounders
 $$ 
+
 Given that unmeasured confounding is a crucial issue in effect identification, we have considered possible omitted variables and their role in the original model:
 
 * Health expenditure: health expenditure likely determines the access to safe abortions and women’s trust in medical institutions. The original paper found that GDP and health expenditure are so closely related that they used GDP as a proxy. We will keep this assumption. 
 
 * Religious views in society and level of secularism: The power of religious institutions and they views they hold in regard to the acceptability of abortion is likely to influence the level of maternal mortality and the flexibility of abortion law. If for instance the church has a lot of power in society and is very traditional this likely will influence the flexibility of the law but also the individual’s choice whether to get a clandestine abortion outside of the health system or she will even have the possibility to acquire a safe abortion in a health institution. However, this confounder would be extremely difficult to measure as there is no systematic recording of religious power and the views different institutions hold for all the studied countries.
+
+####Heterogeinity of effects
+
+####G-separation
+
+"Once estimated, the Q-model (a linear regression of the outcome on the exposure and covariates) is used to predict counterfactual outcomes for each observation under each exposure regimen. This is accomplished by plugging $a=1$ and then subsequently $a=0$ into the regression fit to obtain a predicted outcome under these 2 settings. The counterfactual
+outcome associated with exposure intervention a can be represented as $Y_a$. Because we have a dichotomous treatment setting, the counterfactual outcomes correspond to
+$Y_1$ for exposed and $Y_0$ for unexposed. Generating counterfactual outcomes for each observation in under exposed and unexposed settings furnishes the investigator with a full data set that is free of confounding under causal assumptions and resolves the missing data problem described above."(@snowden2011implementation)
+
+### Unmeasured confounding
+
+Possible confounders that where not considered (directly) in the original paper
+
+Health expenditure: health expenditure likely determines the access to safe abortions and women’s trust in medical institutions. The original paper found that GDP and health expenditure are so closely related that they used GDP as a proxy. We will keep this assumption. 
+
+Religious views in society and level of secularism: The power of religious institutions and they views they hold in regard to the acceptability of abortion is likely to influence the level of maternal mortality and the flexibility of abortion law. If for instance the church has a lot of power in society and is very traditional this likely will influence the flexibility of the law but also the individual’s choice whether to get a clandestine abortion outside of the health system or she will even have the possibility to acquire a safe abortion in a health institution. However, this confounder would be extremely difficult to measure as there is no systematic recording of religious power and the views different institutions hold for all the studied countries.
+
+Party in power politically: The political convictions and policies of political parties in power most likely will influence the abortion law. However, it is unlikely that it will directly cause mortality. Therefore, it is not a confounder in this model. 
 
 * Party in power politically: The political convictions and policies of political parties in power most likely will influence the abortion law. However, it is unlikely that it will directly cause mortality. Therefore, it is not a confounder in this model.
 
