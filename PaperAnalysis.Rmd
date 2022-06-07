@@ -56,12 +56,62 @@ ggdag(dag) +  theme_dag_blank()
 
 ### Unmeasured confounding
 
+Possible confounders that where not considered (directly) in the original paper
+
+Health expenditure: health expenditure likely determines the access to safe abortions and women’s trust in medical institutions. The original paper found that GDP and health expenditure are so closely related that they used GDP as a proxy. We will keep this assumption. 
+
+Religious views in society and level of secularism: The power of religious institutions and they views they hold in regard to the acceptability of abortion is likely to influence the level of maternal mortality and the flexibility of abortion law. If for instance the church has a lot of power in society and is very traditional this likely will influence the flexibility of the law but also the individual’s choice whether to get a clandestine abortion outside of the health system or she will even have the possibility to acquire a safe abortion in a health institution. However, this confounder would be extremely difficult to measure as there is no systematic recording of religious power and the views different institutions hold for all the studied countries.
+
+Party in power politically: The political convictions and policies of political parties in power most likely will influence the abortion law. However, it is unlikely that it will directly cause mortality. Therefore, it is not a confounder in this model. 
+
+
+
+Lack of treating the missingness with female literacy
+
+Comparing the rate of MMR and flexibility score for countries with recorded female primary completion vs countries without recorded female primary completion levels we could check whether there is a selection bias and then generalization of effects of this model would not be possible. If we suppose that female literacy is a collider and a confounder, we cannot condition on it without creating selection bias (Elwert p.38). As this done in the baseline paper, we would have to select strategies to correct this. Otherwise, it would stay d-connected, so statistically dependent. 
+If there is no school that can teach women how to read most likely there is no clinic that can perform a safe abortion, further women are unlikely to be informed about such services. While the issue of women’s information is taken up in the original paper and the lack of knowledge about abortion services even stays a problem for countries with high flexibility scores, low female primary completion here used as a better recorded proxy for female literacy is likely to cause access to abortion. So, it is a post-treatment confounder that potentially influences the outcome of MMR and abortion laws or the original variable of interest - access to safe abortions - it is a proxy for.
+
+Model 1 included all the countries and no female literacy proxy:
+
+```{r}
+dag  <- dagify(MMrates ~ laws,
+               MMrates ~ GDP,
+               laws ~ GDP
+               )
+ggdag(dag) +  theme_dag_blank()
+```
+
+```{r}
+dag  <- dagify(MMrates ~ laws,
+               MMrates ~ GDP,
+               MMrates ~ literacy,
+               laws ~ GDP,
+               laws~literacy
+               )
+ggdag(dag) +  theme_dag_blank()
+```
+However, it is also possible that female literacy has no effect on abortion law and actually only has an effect on the outcome, MMR. Then instead of causal effect it would be an associative risk factor.(Hernandez p.3). In this case the only connection would be if we conditioned on MMR we would create a spurious relation however the effect of literacy and law on each other would be zero. MMR is a common effect of female literacy and flexibility score (abortion laws).
+```{r}
+dag  <- dagify(MMrates ~ laws,
+               MMrates ~ GDP,
+               MMrates ~ literacy,
+               laws ~ GDP
+               )
+ggdag(dag) +  theme_dag_blank()
+```
+However, it is difficult to disentangle the relationship as lower female literacy will also lower access to safe abortions regardless of the flexibility of the law as women are likely less informed about their health care options which in turn increases female mortality.
+
+Testing for those different possible scenarios would be possible with sensitivity analysis or inverse probability weighting. We would need to control for the differences in the sets of considered countries (fem lit = 1) and not considered countries (fem lit = 0) and see what other differences there are or trends in the groups other than female literacy being observed. While the authors drew two models they did not make this clear comparison in the paper. This additional analysis would help us to gain insight into whether recorded primary completion influences female mortality and to what extent. If we condition on a collider (MMR) we open the path between the flow of association between primary completion (A) and abortion law flexibility score (B). Thus, checking values of MMR will let me analyse. Further, it should be checked whether primary completion is a function of the state of human rights and GDP.
+
+In the sensitivity analysis we would check which part of the total effect can be explained by the abortion laws and which can be explained by female literacy. Additionally, we check how much the effects would need to change to cancel one another.For instance, the effect for flexibility score alone I can check when I control (block) the primary completion rate.
+
 ### Missing data
 
+Hernandez is outlining in their paper why data is missing, to restrict the analysis on countries where data are complete would bias it. Countries with missing data on female literacy are still included. (p. 5, Hernandez at all.)Female primary completion is only available for 50 percent of countries and female literacy only for 10 percent. This missingness of data introduces selection bias to this specific analysis the auhtors did in the original paper. As the likely selection bias in this study cannot be avoided due to the limitations on data availability it needs to be corrected if possible, in the analysis (Hernan p. 7) this could be achieved through generalization of inverse probability weighting. For this however we would need to categorize developing countries in one group where some have recorded female literacy which then gets multiplied by the number of countries not considered due to missing data. Inverse probability weighting would work as the score for female literacy is not zero for the countries where it is not recorded.  However, a lot of assumptions would need to be made to apply this method. The assumption that the filler-country would be close enough to the unobserved countries is by nature untestable and therefor it is a strong assumption.
 =======
 >>>>>>> 2390f3bced1f46e03a643063dda253b0010c6416
 ## Conclusion 
-
+The policy conclusion the original paper draws is justified and we could rely on this to give advice to our clients. However, we could expand upon the methodology to get a more precise result and consider possible models as the limitation of models is not sufficiently justified in their paper.
 
 
 
