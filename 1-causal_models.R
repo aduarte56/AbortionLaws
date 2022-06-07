@@ -48,25 +48,27 @@ summary(model1)
 ##
 ##Calculating ATE using G-separation
 ## Create predicted Y_A for all observations, sets flex_score=f
-Ypred.S1<-predict(model1)
+Ypred<-predict(model1)
 #Generate data sets where a is set to 0 and 1
 df.flex_score0<-transform(df1, flex_binary_score=0) 
 df.flex_score1<-transform(df1, flex_binary_score=1)
 ## Create Y_0 for all observations, sets flex_score=0
-Y0.S1<-predict(model1,newdata=df.flex_score0) 
+Y0<-predict(model1,newdata=df.flex_score0) 
 ## Create Y_1 for all observations, sets flex_score=1
-Y1.S1<-predict(model1,newdata=df.flex_score1)
+Y1<-predict(model1,newdata=df.flex_score1)
 ## Calculate (Y_1 - Y_0) for each individual
-difference.S1<-Y1.S1-Y0.S1
-## Create summary table
-table2<-cbind(simdata[,c("W1", "W2", "A")], "Y"=round(simdata[,"Y"],2), "Ypred"=round(Ypred.S2,2), "Y_0"=round(Y0.S2,2), "Y_1"=round(Y1.S2,2), "Y_1-Y_0"=round(difference.S2,2))
+ATE<-Y1-Y0
 
 ##Calculating ATT using G-separation
-df_T <- df1 %>% filter(flex_binary_score==1)
-df_T0<-transform(df_T, flex_binary_score=0) 
-Y_T0.S1<-predict(model1,newdata=df_T0) 
-Y_T1.S1<-predict(model1,newdata=df_T)
-ATT<-Y_T0.S1-Y_T1.S1
+
+df.flex_score0 <- df.flex_score0 %>% mutate(observed_bin_score=df1$flex_binary_score)
+df.flex_score1<- df.flex_score1 %>% mutate(observed_bin_score=df1$flex_binary_score)
+
+df_T0 <- df.flex_score0 %>% filter(observed_bin_score==1)
+df_T<-df1 %>% filter(flex_binary_score==1)
+Y_T0<-predict(model1,newdata=df_T0) 
+Y_T1<-predict(model1,newdata=df_T)
+ATT<-Y_T0-Y_T1
 ##Calculating ATU using G-separation
 
 df_U <- df1 %>% filter(flex_binary_score==0)
