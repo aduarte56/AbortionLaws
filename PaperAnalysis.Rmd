@@ -120,24 +120,6 @@ Given that unmeasured confounding is a crucial issue in effect identification, w
 
 * Religious views in society and level of secularism: The power of religious institutions and they views they hold in regard to the acceptability of abortion is likely to influence the level of maternal mortality and the flexibility of abortion law. If for instance the church has a lot of power in society and is very traditional this likely will influence the flexibility of the law but also the individual’s choice whether to get a clandestine abortion outside of the health system or she will even have the possibility to acquire a safe abortion in a health institution. However, this confounder would be extremely difficult to measure as there is no systematic recording of religious power and the views different institutions hold for all the studied countries.
 
-####Heterogeinity of effects
-
-####G-separation
-
-"Once estimated, the Q-model (a linear regression of the outcome on the exposure and covariates) is used to predict counterfactual outcomes for each observation under each exposure regimen. This is accomplished by plugging $a=1$ and then subsequently $a=0$ into the regression fit to obtain a predicted outcome under these 2 settings. The counterfactual
-outcome associated with exposure intervention a can be represented as $Y_a$. Because we have a dichotomous treatment setting, the counterfactual outcomes correspond to
-$Y_1$ for exposed and $Y_0$ for unexposed. Generating counterfactual outcomes for each observation in under exposed and unexposed settings furnishes the investigator with a full data set that is free of confounding under causal assumptions and resolves the missing data problem described above."(@snowden2011implementation)
-
-### Unmeasured confounding
-
-Possible confounders that where not considered (directly) in the original paper
-
-Health expenditure: health expenditure likely determines the access to safe abortions and women’s trust in medical institutions. The original paper found that GDP and health expenditure are so closely related that they used GDP as a proxy. We will keep this assumption. 
-
-Religious views in society and level of secularism: The power of religious institutions and they views they hold in regard to the acceptability of abortion is likely to influence the level of maternal mortality and the flexibility of abortion law. If for instance the church has a lot of power in society and is very traditional this likely will influence the flexibility of the law but also the individual’s choice whether to get a clandestine abortion outside of the health system or she will even have the possibility to acquire a safe abortion in a health institution. However, this confounder would be extremely difficult to measure as there is no systematic recording of religious power and the views different institutions hold for all the studied countries.
-
-Party in power politically: The political convictions and policies of political parties in power most likely will influence the abortion law. However, it is unlikely that it will directly cause mortality. Therefore, it is not a confounder in this model. 
-
 * Party in power politically: The political convictions and policies of political parties in power most likely will influence the abortion law. However, it is unlikely that it will directly cause mortality. Therefore, it is not a confounder in this model.
 
 * State of human rights and gender equality: State of human rights and gender equality in a country could influence the abortion law flexibility and female primary education completion. However, we think it is unlikely that they will impact MMR; therefore, it would not be necessary to control for them, as long as female primary education is controlled for. 
@@ -203,9 +185,14 @@ Finally, the third requirement is the stable unit treatment value assumption (SU
 
 ## Empirical estimation
 
-### Heterogeinity of effects
+###Heterogeinity of effects
 
-### G-separation
+###G-separation
+
+"Once estimated, the Q-model (a linear regression of the outcome on the exposure and covariates) is used to predict counterfactual outcomes for each observation under each exposure regimen. This is accomplished by plugging $a=1$ and then subsequently $a=0$ into the regression fit to obtain a predicted outcome under these 2 settings. The counterfactual
+outcome associated with exposure intervention a can be represented as $Y_a$. Because we have a dichotomous treatment setting, the counterfactual outcomes correspond to
+$Y_1$ for exposed and $Y_0$ for unexposed. Generating counterfactual outcomes for each observation in under exposed and unexposed settings furnishes the investigator with a full data set that is free of confounding under causal assumptions and resolves the missing data problem described above."(@snowden2011implementation)
+
 
 
 # Analysis
