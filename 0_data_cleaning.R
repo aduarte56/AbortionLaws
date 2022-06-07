@@ -379,16 +379,36 @@ for (i in 1:total) {
 }
 
 #Some modifications to the joined dataset
-df <- df %>%mutate(country_name=countrycode(country_code, origin = 'iso3c', destination = 'country.name'), # creates a country_name variable
+df <- df %>% filter(!year<=2000 & !year>2017) %>% 
+  mutate(country_name=countrycode(country_code, origin = 'iso3c', destination = 'country.name'), # creates a country_name variable
                    country_name=as.factor(country_name), #makes country_name a factor
-                   flex_binary_score=case_when(flexibility_score>=4~1,flexibility_score<4~0 ), #Calculares a binary flexibility score
-                   flex_binary_score=as.factor(flex_binary_score), #makes flex_binary_score a factor
-                   flexibility_score=as.factor(flexibility_score), #makes flexibility_score a factor
-                   period=case_when(year==1996~"1995–1999",
-                                    year>=2000 & year<=2004~"2000–2004",
-                                    year>=2005 & year<=2009~"2005–2009",
-                                    year>=2010 & year<=2014~"2010–2014",
-                                    year>=2015 & year<=2018~"2015–2018"),  # calculates a period variable based on 4 years intervals
-                   period=as.factor(period),#makes period a factor
+                   period=case_when(year>=2000 & year<=2003~"2000–2003",
+                                    year>=2004 & year<=2007~"2004–2007",
+                                    year>=2008 & year<=2011~"2008–2011",
+                                    year>=2012 & year<=2015~"2012–2015",
+                                    year>=2016 & year<=2017~"2016–2017"),  # calculates a period variable based on 4 years intervals
                    year=as.factor(year)) %>% #makes period a factor
-  filter(year %in% seq(1996,2018, by=1)) #filters data from 1996 to 2015 (matching the abortion policies data we have)
+  filter(year %in% seq(2000,2017, by=1)) #filters data from 1996 to 2015 (matching the abortion policies data we have)
+
+#Calculating the median for flexibility score per period. 
+df %>% group_by(period) %>% summarize(median_flex_score=median(flexibility_score, na.rm=T))
+
+#calculating a binary variable for flexibility_score 
+df <- df %>% mutate(flex_binary_score=case_when(flexibility_score>=4~1,flexibility_score<4~0 ), #Calculates a binary flexibility score
+                    flexibility_score=as.factor(flexibility_score), #makes flexibility_score a factor
+                    period=as.factor(period)) #makes period a factor 
+        
+
+
+
+
+
+
+
+df1 <- df %>% select(year, country_code, flexibility_score, gdp, primary_completion)
+
+ggplot(data=df, aes(x=year, y=flexibility_score)) +
+  geom_point(aes(size=gdp))
+
+ggplot(data=df, aes(x=gdp, y=flexibility_score, color=period)) +
+  geom_point(alpha=0.7)
