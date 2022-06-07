@@ -248,15 +248,32 @@ grounds2022 <- grounds2022 %>% mutate(incest_rape=case_when(incest==1 | rape==1~
 
 #Setting a column for year of the latest abortion policy per country.
 grounds2022 <- grounds2022 %>% mutate(date_completed=dmy(date_completed)) %>% 
-  mutate(year_completed=year(date_completed)) %>% 
+  mutate(year=year(date_completed)) %>% 
   relocate(c(country_name, country_code), .after = national_jurisdiction) %>% 
-  relocate(c(year_completed), .after = date_completed) 
+  relocate(c(year), .after = date_completed) 
 
+#Agreggates the observation per states into a single Country variable
 countries_states <- c("Australia", "Bosnia & Herzegovina", "Canada", "China", "Mexico", 
                       "Nigeria", "Switzerland", "United Kingdom" )
 
-#TO DO: still need to agreggate the observation per states into a single Country variable
+temp <- grounds2022 %>% filter(country_name %in% countries_states) %>% 
+  select(-c(country_code, year, region, sub_region, iso_code, other, date_completed, flexibility_score)) 
 
+write_excel_csv(temp,"Data/temp.csv")
+temp2 <- read_excel("Data/temp1.xlsx", na="NA")
+temp2[3:9] <- lapply(temp2[3:9], as.numeric)
+
+temp2 <- temp2 %>% mutate(flexibility_score=rowSums(temp2[3:9], na.rm=TRUE))
+                 
+no_states <- grounds2022 %>% filter(country_name %in% countries_states, national_jurisdiction %in% temp2$national_jurisdiction) %>% 
+  mutate(save_life=temp2$save_life, physical_health=temp2$physical_health, mental_health=temp2$mental_health,
+         foetal_imp=temp2$foetal_imp, socioec=temp2$socioec, incest_rape=temp2$incest_rape, on_request=temp2$on_request,
+         flexibility_score=temp2$flexibility_score)
+
+grounds2022_2 <- grounds2022 %>% filter(!country_name %in% countries_states) %>% rbind(., no_states) %>% 
+  select(country_code, flexibility_score, year) %>% filter(!year=="2017")
+
+complete_grounds=rbind(complete_grounds, grounds2022_2)
 
 ## #############################################################################
 ## 3. GDP DATASET 
@@ -311,6 +328,10 @@ primary_completion <- primary_completion %>%
   pivot_longer(cols=as.character(seq(1996,2021, by=1)), names_to = "year",values_to="primary_completion")%>% 
   select(-country_name)
 
+
+ggplot(data=primary_completion %>% group_by(country_code), aes(x=year, y=primary_completion)) +
+  geom_line(data=primary_completion, aes(color=country_code))+
+  geom_point(alpha=0.5)
 
 
 #------------------------------------------------------------------------------
@@ -367,7 +388,7 @@ df <- df %>%mutate(country_name=countrycode(country_code, origin = 'iso3c', dest
                                     year>=2000 & year<=2004~"2000–2004",
                                     year>=2005 & year<=2009~"2005–2009",
                                     year>=2010 & year<=2014~"2010–2014",
-                                    year>=2015 & year<=2019~"2015–2019"),  # calculates a period variable based on 4 years intervals
+                                    year>=2015 & year<=2018~"2015–2018"),  # calculates a period variable based on 4 years intervals
                    period=as.factor(period),#makes period a factor
                    year=as.factor(year)) %>% #makes period a factor
-  filter(year %in% seq(1996,2015, by=1)) #filters data from 1996 to 2015 (matching the abortion policies data we have)
+  filter(year %in% seq(1996,2018, by=1)) #filters data from 1996 to 2015 (matching the abortion policies data we have)
