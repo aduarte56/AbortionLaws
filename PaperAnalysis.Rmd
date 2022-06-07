@@ -13,6 +13,8 @@ library(dagitty)
 library(ggdag)
 ```
 
+\newcommand{\indep}{\perp \!\!\! \perp}
+
 ## Introduction
 
 Introduction on abortion laws and motivation
@@ -29,35 +31,49 @@ In "Abortion laws reform may reduce maternal mortality: an ecological study in 1
 
 Theoretical estimand is a key part of a research question, as it describes the quantity of interest independently of statistical models and clearly describes the research goal [@Lundberg2021]. In the current paper, the theorethical estimand was not specifically stated; however, we tried to deduce the desired estimand from the research goal and the estimation strategy authors used.
 
-The authors state that they aim to “estimate the association between the flexibility of abortion laws and maternal mortality at a country level [between 1985 and 2013]” [@Latt2019, pg. 2]. Furthermore, they estimated the model using linear regression, and the quantity they have estimated was the regression coefficient of MMR on flexibility of the law. Therefore, we we believe that the authors wanted to assess the average treatment effect (ATE), that is, the difference in the number of maternal deaths that would occur within a country if abortion law was flexible ($Y_i$ = 1) versus inflexible ($Y_i$ = 0):
+The authors state that they aim to “estimate the association between the flexibility of abortion laws and maternal mortality at a country level [between 1985 and 2013]” [@Latt2019, pg. 2]. Furthermore, they estimated the model using linear regression, and the quantity they have estimated was the regression coefficient of MMR on flexibility of the law. Therefore, we we believe that the authors wanted to assess the average treatment effect (ATE), that is, the difference in the number of maternal deaths that would occur within a country if abortion law was flexible ($MMR_i$ = 1) versus inflexible ($MMR_i$ = 0):
 
 $$
-ATE = \frac{1}{n}\sum_{i=1}^{n}(Y_i^1 - Y_i^0) = \frac{1}{n}\sum_{i=1}^{n}\Delta Y_i = \mathbb{E} [\Delta Y]
+ATE = \frac{1}{n}\sum_{i=1}^{n}(MMR_i^1 - MMR_i^0) = \frac{1}{n}\sum_{i=1}^{n}\Delta MMR_i = \mathbb{E} [\Delta MMR]
 $$
-This estimand looks at counterfactual outcomes for all countries, regardless of the fact that the particular country would in reality receive treatment or not. Country $i$'s MMR when abortion laes are flexible is denoted as $Y_i^{(L=1)}$ or shortly $Y_i^{(1)}$, and as $Y_i^{(L=0)}$ or $Y_i^{(0)}$ when abortion laws are inflexible. Individual causal effect for the country $i$ is then the difference between mortality when abortion laws are flexible vs. when they are inflexible, or $ΔY_i = Y_i^{(1)} - Y_i^{(0)}$. Individual effects averaged across all of the countries in the world would then give the wanted causal quantity. This is equal to the expectation of the effect of flexible abortion laws on MMR of a randomly selected country. 
+This estimand looks at counterfactual outcomes for all countries, regardless of the fact that the particular country would in reality receive treatment or not. Country $i$'s MMR when abortion laes are flexible is denoted as $MMR_i^{(L=1)}$ or shortly $MMR_i^{(1)}$, and as $MMR_i^{(L=0)}$ or $MMR_i^{(0)}$ when abortion laws are inflexible. Individual causal effect for the country $i$ is then the difference between mortality when abortion laws are flexible vs. when they are inflexible, or $ΔMMR_i = MMR_i^{(1)} - MMR_i^{(0)}$. Individual effects averaged across all of the countries in the world would then give the wanted causal quantity. This is equal to the expectation of the effect of flexible abortion laws on MMR of a randomly selected country. 
 
 As ATE reflects the effect of the treatment for the entire study population, it can be particularly useful for scoping the benefit of population-wide policies. However, as there will be inevitable self-selection to treatment in case of abortion policies -- some countries will choose to have more flexible laws and some will choose less flexible laws -- there are other estimands that could potentially be interesting for researchers in this particular case.
 
 In fact, one interpretation of the results that authors give is that "it is possible that maternal mortality would reduce in [countries with low abortion flexibility scores] if legal, safe abortion was more readily available" [@Lundberg2021, pg. 6, para. 2]. This would indicate that they might actually be interested in the ATU - the average effect of the treatment on the untreated, that is, for the population of units that did not receive the treatment:
 
 $$
-ATU = \mathbb{E}[Y^{(1)} - Y^{(0)} \mid L = 0]
+ATU = \mathbb{E}[MMR^{(1)} - MMR^{(0)} \mid L = 0]
 $$
 ATU shows how the outcome would differ if untreated units were actually treated, in other words, the effect of expanding the treatment. This could potentially be the most useful estimand in this study, as it could be used in considering the expansion of a medical practice to units that were previously untreated [@greifer2021].  
 
 Another potentially interesting estimand is the ATT, that is, the effect of the treatment for the population of units that actually received the treatment:
 
 $$
-ATT = \mathbb{E}[Y^{(1)} - Y^{(0)} \mid L = 1]
+ATT = \mathbb{E}[MMR^{(1)} - MMR^{(0)} \mid L = 1]
 $$
 
 ATT shows how the outcome would differ if treated units were actually not treated, in other words, the effect of the withholding the treatment from the ones who would otherwise receive it [@greifer2021]. In light of recent policy changes and reductions of abortion flexibility laws in the USA, ATT could be particularly relevant.
 
+In an ideal (in terms of causal identification) scenario -- randomised control trials (RCTs) -- all three estimands (ATE, ATU, ATT) will be the same because we assume that:
+
+* The baseline of the treated group is equal to the baseline of the untreated group, that is, countries that have flexible abortion laws would do *as bad* (in terms of MMR) as countries that have inflexible abortion laws, if they didn't have flexible abortion laws:
+
+$$
+\mathbb{E}[MMR^{0} \mid L = 1] = \mathbb{E}[MMR^{0} \mid L = 0]
+$$
+* The treatment effect will not be different in the treated and the untreated group, that is, countries that have inflexible abortion laws would do *as good* as countries with flexible abortion laws, if they made the laws more flexible:
+
+$$
+\mathbb{E}[MMR^{1} \mid L = 1] = \mathbb{E}[MMR^{1} \mid L = 0]
+$$
+These assumptions are commonly violated in observational studies, as we will show in the next section, therefore it is to be expected that the three estimands (ATE, ATU, ATT) would be different in the current study. 
+
 ### Identification
 
-For each country $i$ it is not possible to observe both potential outcomes, so a theoretical estimand is not an empirical quantity. As this is an observational study, where the treatment is not assigned in a random way but rather observed, there are several assumptions that need to be made to be able to estimate causal effects.
+For each country $i$ it is not possible to observe both potential outcomes, so a theoretical estimand is not an empirical quantity. Emprirical estimand is a translation of the theoretical, unobserved quantity, into observable data. This link is often formalised using Directed Acyclic Graphs (DAGs) that formally state model assumptions under which a theorethical estimand can be calculated [@Lundberg2021].
 
-First, effects cannot be estimated if there is unmeasured counfounding. This means that all common causes of treatment assignment and the outcome must be included in the analysis. The current paper proposes that flexibility of abortion laws causes maternal mortality, and that GDP and female primary education completion are confounders of this relationship -- that is, they cause both whether or not a country will have flexible abortion laws and how big MMR will be. They also propose that the causal mechanism by which this relationship comes about is that the women in countries where restrictive laws are in place are less able (or unable) to access reproductive health care and safe abortion services, which increases the proportion of unsafe abortions, and in turn, maternal deaths. The model can be seen in the figure below:
+The current paper proposes that flexibility of abortion laws causes maternal mortality, and that GDP and female primary education completion are confounders of this relationship -- that is, they cause both whether or not a country will have flexible abortion laws and how big MMR will be. They also propose that the causal mechanism by which this relationship comes about is that the women in countries where restrictive laws are in place are less able (or unable) to access reproductive health care and safe abortion services, which increases the proportion of unsafe abortions, and in turn, maternal deaths. The model can be seen in the figure below:
 
 <center>
 
@@ -65,20 +81,28 @@ First, effects cannot be estimated if there is unmeasured counfounding. This mea
 
 </center>
 
+This model has several practical implications:
+
+* The effect that we are trying to estimate, the effect of abortion law on MMR, has 2 "paths": Law &rarr; Access to safe abortion &rarr; MMR and Law &rarr; Access to safe abortion &rarr; Number of safe abortion &rarr; MMR;
+* Even though Access to safe abortion and Number of safe abortions are unmeasured, the relationship between Law and MMR can be estimated (but we won't know how much of that relationship is due to the Number of unsafe abortions); 
+* Female primary education completion and GDP confound the Law &rarr; MMR relationship;
+* Because Female primary education and GDP are measured, then $MMR^{(1)}, MMR^{(0)} \indep Law \mid Female \ primary \ education, GDP$.
+
+However, there are several potential identification issues that could influence the possibility to estimate the effect of abortion law flexibility on MMR, namely; unmeasured counfounding and (non-radnom) data missingness. These are discussed in detail below.
+
+####Unmeasured counfounding
 
 
-```{r}
-dag  <- dagify(MMR ~ Abortion_law_flexibility + GDP + Female_primary_education + 
-                 Access_to_safe_abortion + Unsafe_abortions,
-               Abortion_law_flexibility ~ GDP + Female_primary_education,
-               Access_to_safe_abortion ~ Abortion_law_flexibility,
-               Unsafe_abortions ~ Access_to_safe_abortions
-               )
-ggdag(dag) +  theme_dag_blank()
-```
+As this is an observational study, where the treatment is not assigned in a random way but rather observed, there are several assumptions that need to be made to be able to estimate causal effects.
 
+First, effects cannot be estimated if there is unmeasured counfounding. This means that all common causes of treatment assignment and the outcome must be included in the analysis. 
+
+
+####Positivity assumption
 
 The second assumption is that of positivity, meaning that all units of analysis should have a nonzero probability of receiving either treatment.
+
+####SUTVA
 
 Finally, the third requirement is the stable unit treatment value assumption (SUTVA), meaning that there are no unmeasured versions of treatment and that the treatment status of any other unit does not affect other unit's outcomes. 
 
@@ -93,8 +117,12 @@ dag  <- dagify(MMrates ~ laws,
 ggdag(dag) +  theme_dag_blank()
 ```
 
-<<<<<<< HEAD
-### Heterogeinity of effects
+
+### Empirical estimation
+
+####Heterogeinity of effects
+
+####G-separation
 
 ### Unmeasured confounding
 
