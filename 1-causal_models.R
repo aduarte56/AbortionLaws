@@ -16,8 +16,8 @@ library(countrycode)
 library(MatchIt)
 library(fixest) # for fixed effect regression estimation
 
-source("0_data_cleaning.R")
-
+# Reading the dataset
+df1 <- read_csv("Data/final_dataset.csv")
 
 ###############################################################################
 ##
@@ -25,15 +25,15 @@ source("0_data_cleaning.R")
 ##
 ###############################################################################
 
-model <- lm(data=df, mortality_ratio_17~flexibility_score+primary_completion+gdp+country_name+period)
+#Linear regression model: mortality rate on flexibility of abortion laws controlling for 
+#gdp, countries and periods
+model <- lm(data=df1, mortality_ratio_17~flexibility_score+gdp+country_name+period)
 summary(model)
 
+#Linear regression model: mortality rate on binary flexibility score controlling for 
+#gdp, countries and periods
 model1 <- lm(data=df1, mortality_ratio_17~flex_binary_score+gdp+country_name+period)
 summary(model1)
-
-model2 <- lm(data=df, mortality_ratio_17~flex_binary_score+primary_completion+gdp+period)
-summary(model2)
-
 
 ###############################################################################
 ##
@@ -44,7 +44,7 @@ summary(model2)
 # G-separation
 #______________________________________________________________________________
 
-df1 <- df %>% select(-c(female_literacy, mortality_rate, primary_completion)) %>% drop_na()
+
 ##
 ##Calculating ATE using G-separation
 ## Create predicted Y_A for all observations, sets flex_score=f
