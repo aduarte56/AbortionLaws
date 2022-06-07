@@ -13,58 +13,116 @@ library(dagitty)
 library(ggdag)
 ```
 
-## Introduction
+
+\newcommand{\indep}{\perp \!\!\! \perp}
+
+# Introduction
 
 Introduction on abortion laws and motivation
 
-## Description of the original paper
+# Description of the original paper
 
 In "Abortion laws reform may reduce maternal mortality: an ecological study in 162 countries," @Latt2019 present the results of a study that aims to assess whether maternal mortality is affected by the flexibility of abortion laws. Abortion law flexibility was measured as a sum of the number of reasons for which abortion is legally allowed (ranging from 0 to 7) and was included in models as both an ordinal variable and a binary variable (inflexible vs. flexible abortion laws). Abortion laws were considered inflexible if there were less than 3 legal grounds for abortion. Maternal mortality ratio (MMR) was measured as the number of maternal deaths per 100,000 live births. Authors used fixed effects linear regression models to estimate the relationship between abortion law flexibility and MMR, while controlling for GDP per capita and time in five-year intervals. Additional analysis included also female primary education completion as a control variable as it had over 50% of missing data; however, results did not change. Results indicated that maternal deaths reduce by 45 per 100,000 live births (95% CI: -64, -26) with flexible abortion laws. Authors conclude that abortion law reform in countries with inflexible abortion laws may reduce maternal mortality.    
 
 
-##  Methodology
+#  Methodology
 
 
-### Theorethical estimands
+## Theorethical estimands
 
-Theoretical estimand is a key part of a research question, as it describes the quantity of interest independently of statistical models and clearly describes the research goal [@Lundberg2021]. In the current paper, the theorethical estimand was not specifically stated; however, we tried to deduce the desired estimand from the research goal and the estimation strategy they used.
+Theoretical estimand is a key part of a research question, as it describes the quantity of interest independently of statistical models and clearly describes the research goal [@Lundberg2021]. In the current paper, the theorethical estimand was not specifically stated; however, we tried to deduce the desired estimand from the research goal and the estimation strategy authors used.
 
-The authors state that they aim to “estimate the association between the flexibility of abortion laws and maternal mortality at a country level [between 1985 and 2013]” [@Latt2019, pg. 2]. Furthermore, they estimated the model using linear regression, and the quantity they have estimated was the regression coeffitient of MMR on flexibility of the law. Therefore, we we believe that the authors wanted to assess the average treatment effect (ATE), that is, the difference in the number of maternal deaths that would occur within a country if abortion law was flexible ($Y_i$ = 1) versus inflexible ($Y_i$ = 0):
+The authors state that they aim to “estimate the association between the flexibility of abortion laws and maternal mortality at a country level [between 1985 and 2013]” [@Latt2019, pg. 2]. Furthermore, they estimated the model using linear regression, and the quantity they have estimated was the regression coefficient of MMR on flexibility of the law. Therefore, we we believe that the authors wanted to assess the average treatment effect (ATE), that is, the difference in the number of maternal deaths that would occur within a country if abortion law was flexible ($MMR_i$ = 1) versus inflexible ($MMR_i$ = 0):
 
 $$
-ATE = \frac{1}{n}\sum_{i=1}^{n}(Y_i^1 - Y_i^0) = \frac{1}{n}\sum_{i=1}^{n}\Delta Y_i = \mathbb{E} [\Delta Y]
+ATE = \frac{1}{n}\sum_{i=1}^{n}(MMR_i^1 - MMR_i^0) = \frac{1}{n}\sum_{i=1}^{n}\Delta MMR_i = \mathbb{E} [\Delta MMR]
 $$
-This estimand looks at counterfactual outcomes for all countries, regardless of the fact that the particular country would in reality receive treatment or not.
 
+This estimand looks at counterfactual outcomes for all countries, regardless of the fact that the particular country would in reality receive treatment or not. Country $i$'s MMR when abortion laes are flexible is denoted as $MMR_i^{(L=1)}$ or shortly $MMR_i^{(1)}$, and as $MMR_i^{(L=0)}$ or $MMR_i^{(0)}$ when abortion laws are inflexible. Individual causal effect for the country $i$ is then the difference between mortality when abortion laws are flexible vs. when they are inflexible, or $ΔMMR_i = MMR_i^{(1)} - MMR_i^{(0)}$. Individual effects averaged across all of the countries in the world would then give the wanted causal quantity. This is equal to the expectation of the effect of flexible abortion laws on MMR of a randomly selected country. 
 
-### Identification
+As ATE reflects the effect of the treatment for the entire study population, it can be particularly useful for scoping the benefit of population-wide policies. However, as there will be inevitable self-selection to treatment in case of abortion policies -- some countries will choose to have more flexible laws and some will choose less flexible laws -- there are other estimands that could potentially be interesting for researchers in this particular case.
 
+In fact, one interpretation of the results that authors give is that "it is possible that maternal mortality would reduce in [countries with low abortion flexibility scores] if legal, safe abortion was more readily available" [@Lundberg2021, pg. 6, para. 2]. This would indicate that they might actually be interested in the ATU - the average effect of the treatment on the untreated, that is, for the population of units that did not receive the treatment:
 
+$$
+ATU = \mathbb{E}[MMR^{(1)} - MMR^{(0)} \mid L = 0]
+$$
 
-```{r}
-dag  <- dagify(MMrates ~ laws,
-               MMrates ~ GDP,
-               MMrates ~ literacy,
-               laws ~ GDP,
-               laws~literacy
-               )
-ggdag(dag) +  theme_dag_blank()
+ATU shows how the outcome would differ if untreated units were actually treated, in other words, the effect of expanding the treatment. This could potentially be the most useful estimand in this study, as it could be used in considering the expansion of a medical practice to units that were previously untreated [@greifer2021].  
+
+Another potentially interesting estimand is the ATT, that is, the effect of the treatment for the population of units that actually received the treatment:
+
+$$
+ATT = \mathbb{E}[MMR^{(1)} - MMR^{(0)} \mid L = 1]
+$$
+
+ATT shows how the outcome would differ if treated units were actually not treated, in other words, the effect of the withholding the treatment from the ones who would otherwise receive it [@greifer2021]. In light of recent policy changes and reductions of abortion flexibility laws in the USA, ATT could be particularly relevant.
+
+In an ideal (in terms of causal identification) scenario -- randomised control trials (RCTs) -- all three estimands (ATE, ATU, ATT) will be the same because we assume that:
+
+* The baseline of the treated group is equal to the baseline of the untreated group, that is, countries that have flexible abortion laws would do *as bad* (in terms of MMR) as countries that have inflexible abortion laws, if they didn't have flexible abortion laws:
+
+$$
+\mathbb{E}[MMR^{0} \mid L = 1] = \mathbb{E}[MMR^{0} \mid L = 0]
+$$
+
+* The treatment effect will not be different in the treated and the untreated group, that is, countries that have inflexible abortion laws would do *as good* as countries with flexible abortion laws, if they made the laws more flexible:
+
+$$
+\mathbb{E}[MMR^{1} \mid L = 1] = \mathbb{E}[MMR^{1} \mid L = 0]
+$$
+These assumptions are commonly violated in observational studies, as we will show in the next section, therefore it is to be expected that the three estimands (ATE, ATU, ATT) would be different in the current study. 
+
+## Identification
+
+For each country $i$ it is not possible to observe both potential outcomes, so a theoretical estimand is not an empirical quantity. Emprirical estimand is a translation of the theoretical, unobserved quantity, into observable data. This link is often formalised using Directed Acyclic Graphs (DAGs) that formally state model assumptions under which a theorethical estimand can be calculated [@Lundberg2021].
+
+The current paper proposes that flexibility of abortion laws causes maternal mortality, and that GDP and female primary education completion are confounders of this relationship -- that is, they cause both whether or not a country will have flexible abortion laws and how big MMR will be. The authors also propose that the causal mechanism by which this relationship comes about is that the women in countries where restrictive laws are in place are less able (or unable) to access reproductive health care and safe abortion services, which increases the proportion of unsafe abortions, and in turn, maternal deaths. The model can be seen in the figure below:
+
+<center>
+
+![Figure 1.: Causal model as recreated from @Latt2019 ](Figures/dag1.png)
+
+</center>
+
+This model has several practical implications:
+
+* The effect that we are trying to estimate, the effect of abortion law on MMR, has 2 "paths": Law &rarr; Access to safe abortion &rarr; MMR and Law &rarr; Access to safe abortion &rarr; Number of safe abortion &rarr; MMR;
+* Even though Access to safe abortion and Number of safe abortions are unmeasured, the relationship between Law and MMR can be estimated (but we won't know how much of that relationship is due to the Number of unsafe abortions); 
+* Female primary education completion and GDP confound the Law &rarr; MMR relationship;
+* Because Female primary education and GDP are measured, then $MMR^{(1)}, MMR^{(0)} \indep Law \mid Female \ primary \ education, GDP$.
+
+However, there are several potential identification issues that could influence the possibility to estimate the effect of abortion law flexibility on MMR, namely; unmeasured counfounding and (non-radnom) data missingness. These are discussed in detail below.
+
+### Unmeasured counfounding
+
+What makes the estimation of ATE plausible is “uncoupling” or *d-separation* of assignment of units of analysis (in this case, countries) into treatment and control conditions. In randomized trials, this is achieved by randomly assigning treatment to unit analysis (Figure 2a). Randomization:
+
+* Identifies the effect of Abortion law on MMR;
+* Generated approximate balance in counfounders, even if a counfounder is unobserved;
+
+which means that the causal effect of Law on MMR can be estimated. Conditioning on counfounders is still (statictically) desirable, as it will increase the precision of the effect estimate.
+
+```{r, echo=FALSE,out.width="49%",out.height="49%",fig.show='hold', fig.align='center', fig.cap="Figure 2. a) Randomisation removes inbound connections from confounders to treatment, b) Without controling for all counfounders, the causal effect can't be estimated"}
+
+knitr::include_graphics(c("Figures/dag2a.png","Figures/dag2b.png"))
 ```
 
-<<<<<<< HEAD
-### Heterogeinity of effects
+However, in observational studies, the causal effect is identified only when we control for all counfounders. If there is unobserved counfounding (Figure2b), the causal effect can't be identified as:
 
-### Unmeasured confounding
+$$
+MMR^{(1)}, MMR^{(0)} \indep Law \mid Female \ primary \ education, GDP, Unmeasured \ counfounders
+$$ 
 
-Possible confounders that where not considered (directly) in the original paper
+Given that unmeasured confounding is a crucial issue in effect identification, we have considered possible omitted variables and their role in the original model:
 
-Health expenditure: health expenditure likely determines the access to safe abortions and women’s trust in medical institutions. The original paper found that GDP and health expenditure are so closely related that they used GDP as a proxy. We will keep this assumption. 
+* Health expenditure: health expenditure likely determines the access to safe abortions and women’s trust in medical institutions. The original paper found that GDP and health expenditure are so closely related that they used GDP as a proxy. We will keep this assumption. 
 
-Religious views in society and level of secularism: The power of religious institutions and they views they hold in regard to the acceptability of abortion is likely to influence the level of maternal mortality and the flexibility of abortion law. If for instance the church has a lot of power in society and is very traditional this likely will influence the flexibility of the law but also the individual’s choice whether to get a clandestine abortion outside of the health system or she will even have the possibility to acquire a safe abortion in a health institution. However, this confounder would be extremely difficult to measure as there is no systematic recording of religious power and the views different institutions hold for all the studied countries.
+* Religious views in society and level of secularism: The power of religious institutions and they views they hold in regard to the acceptability of abortion is likely to influence the level of maternal mortality and the flexibility of abortion law. If for instance the church has a lot of power in society and is very traditional this likely will influence the flexibility of the law but also the individual’s choice whether to get a clandestine abortion outside of the health system or she will even have the possibility to acquire a safe abortion in a health institution. However, this confounder would be extremely difficult to measure as there is no systematic recording of religious power and the views different institutions hold for all the studied countries.
 
-Party in power politically: The political convictions and policies of political parties in power most likely will influence the abortion law. However, it is unlikely that it will directly cause mortality. Therefore, it is not a confounder in this model. 
+* Party in power politically: The political convictions and policies of political parties in power most likely will influence the abortion law. However, it is unlikely that it will directly cause mortality. Therefore, it is not a confounder in this model.
 
-
+* State of human rights and gender equality: State of human rights and gender equality in a country could influence the abortion law flexibility and female primary education completion. However, we think it is unlikely that they will impact MMR; therefore, it would not be necessary to control for them, as long as female primary education is controlled for. 
 
 Lack of treating the missingness with female literacy
 
@@ -90,7 +148,9 @@ dag  <- dagify(MMrates ~ laws,
                )
 ggdag(dag) +  theme_dag_blank()
 ```
+
 However, it is also possible that female literacy has no effect on abortion law and actually only has an effect on the outcome, MMR. Then instead of causal effect it would be an associative risk factor.(Hernandez p.3). In this case the only connection would be if we conditioned on MMR we would create a spurious relation however the effect of literacy and law on each other would be zero. MMR is a common effect of female literacy and flexibility score (abortion laws).
+
 ```{r}
 dag  <- dagify(MMrates ~ laws,
                MMrates ~ GDP,
@@ -99,6 +159,7 @@ dag  <- dagify(MMrates ~ laws,
                )
 ggdag(dag) +  theme_dag_blank()
 ```
+
 However, it is difficult to disentangle the relationship as lower female literacy will also lower access to safe abortions regardless of the flexibility of the law as women are likely less informed about their health care options which in turn increases female mortality.
 
 Testing for those different possible scenarios would be possible with sensitivity analysis or inverse probability weighting. We would need to control for the differences in the sets of considered countries (fem lit = 1) and not considered countries (fem lit = 0) and see what other differences there are or trends in the groups other than female literacy being observed. While the authors drew two models they did not make this clear comparison in the paper. This additional analysis would help us to gain insight into whether recorded primary completion influences female mortality and to what extent. If we condition on a collider (MMR) we open the path between the flow of association between primary completion (A) and abortion law flexibility score (B). Thus, checking values of MMR will let me analyse. Further, it should be checked whether primary completion is a function of the state of human rights and GDP.
@@ -114,12 +175,45 @@ data-generating process
 Generally, sensitivity analysis is still underutilized in social science and policy research papers (Sudan paper p. 40). However, it is a very useful tool to test robustness of findings, i.e. how sensitive my effects and effect sizes are to other variables that influence the treatment or outcome studied. Therefore, we are proposing to add a sensitivity analysis to the research design and also apply it in the second part of our report. This method gives us two insights: 1) the robustness value: how robust the coefficient is to confounders influencing treatment and outcome and 2) the proportion of the outcome uniquely explained by the treatment and how strong a confounder would have to be to eliminate the effect of the treatment. (Sudan paper pp.40/41)
 
 
+
 ### Missing data
 
 Hernandez is outlining in their paper why data is missing, to restrict the analysis on countries where data are complete would bias it. Countries with missing data on female literacy are still included. (p. 5, Hernandez at all.)Female primary completion is only available for 50 percent of countries and female literacy only for 10 percent. This missingness of data introduces selection bias to this specific analysis the auhtors did in the original paper. As the likely selection bias in this study cannot be avoided due to the limitations on data availability it needs to be corrected if possible, in the analysis (Hernan p. 7) this could be achieved through generalization of inverse probability weighting. For this however we would need to categorize developing countries in one group where some have recorded female literacy which then gets multiplied by the number of countries not considered due to missing data. Inverse probability weighting would work as the score for female literacy is not zero for the countries where it is not recorded.  However, a lot of assumptions would need to be made to apply this method. The assumption that the filler-country would be close enough to the unobserved countries is by nature untestable and therefor it is a strong assumption.
-=======
->>>>>>> 2390f3bced1f46e03a643063dda253b0010c6416
-## Conclusion 
+
+### Positivity assumption
+
+?
+The second assumption is that of positivity, meaning that all units of analysis should have a nonzero probability of receiving either treatment.
+
+### SUTVA
+
+?
+Finally, the third requirement is the stable unit treatment value assumption (SUTVA), meaning that there are no unmeasured versions of treatment and that the treatment status of any other unit does not affect other unit's outcomes. 
+
+
+
+## Empirical estimation
+
+###Heterogeinity of effects
+
+###G-separation
+
+"Once estimated, the Q-model (a linear regression of the outcome on the exposure and covariates) is used to predict counterfactual outcomes for each observation under each exposure regimen. This is accomplished by plugging $a=1$ and then subsequently $a=0$ into the regression fit to obtain a predicted outcome under these 2 settings. The counterfactual
+outcome associated with exposure intervention a can be represented as $Y_a$. Because we have a dichotomous treatment setting, the counterfactual outcomes correspond to
+$Y_1$ for exposed and $Y_0$ for unexposed. Generating counterfactual outcomes for each observation in under exposed and unexposed settings furnishes the investigator with a full data set that is free of confounding under causal assumptions and resolves the missing data problem described above."(@snowden2011implementation)
+
+
+
+# Analysis
+
+* Dataset description
+* Regression ATE
+* Heterogeinity of effects
+* Unmeasured confounding
+* G-separation ATE, ATU, ATT
+
+
+# Conclusion 
 The policy conclusion the original paper draws is justified and we could rely on this to give advice to our clients. However, we could expand upon the methodology to get a more precise result and consider possible models as the limitation of models is not sufficiently justified in their paper.
 
 

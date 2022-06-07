@@ -1,0 +1,94 @@
+﻿"national_jurisdiction","country_name","save_life","physical_health","mental_health","foetal_imp","socioec","on_request","incest_rape"
+"Nigeria","Nigeria",0.5,0.5,0.5,0.5,0.5,0.5,NA
+"Northern Nigeria","Nigeria",1,0,0,NA,0,0,0
+"Southern Nigeria","Nigeria",1,NA,NA,NA,NA,NA,NA
+"China","China",1,1,NA,1,NA,1,NA
+"Hong Kong","China",1,1,1,1,NA,NA,1
+"Bosnia and Herzegovina","Bosnia & Herzegovina",0.5,0.5,0.5,0.5,0.5,0.5,NA
+"Federation of Bosnia and Herzegovina","Bosnia & Herzegovina",NA,NA,NA,NA,NA,NA,NA
+"Republika Srpska","Bosnia & Herzegovina",1,0,0,1,0,1,1
+"Switzerland","Switzerland",0,0,0,0,0,0,0
+"Aargau","Switzerland",0,0,0,0,0,0,0
+"Appenzell Ausserrhoden","Switzerland",0,0,0,0,0,0,0
+"Appenzell Innerrhoden","Switzerland",0,0,0,0,0,0,0
+"Basel-Landschaft","Switzerland",0,0,0,0,0,0,0
+"Basel-Stadt","Switzerland",0,0,0,0,0,0,0
+"Bern","Switzerland",0,0,0,0,0,0,0
+"Fribourg","Switzerland",0,0,0,0,0,0,0
+"Genève","Switzerland",0,0,0,0,0,0,0
+"Graubünden","Switzerland",0,0,0,0,0,0,0
+"Jura","Switzerland",0,0,0,0,0,0,0
+"Luzern","Switzerland",0,0,0,0,0,0,0
+"Neuchâtel","Switzerland",0,0,0,0,0,0,0
+"Nidwalden","Switzerland",0,0,0,0,0,0,0
+"Obwalden","Switzerland",0,0,0,0,0,0,0
+"Schaffhausen","Switzerland",0,0,0,0,0,0,0
+"Schwyz","Switzerland",0,0,0,0,0,0,0
+"Solothurn","Switzerland",0,0,0,0,0,0,0
+"St Gallen","Switzerland",0,0,0,0,0,0,0
+"Thurgau","Switzerland",0,0,0,0,0,0,0
+"Ticino","Switzerland",0,0,0,0,0,0,0
+"Uri","Switzerland",0,0,0,0,0,0,0
+"Valais","Switzerland",0,0,0,0,0,0,0
+"Vaud","Switzerland",0,0,0,0,0,0,0
+"Zug","Switzerland",0,0,0,0,0,0,0
+"Zurich","Switzerland",0,0,0,0,0,0,0
+"United Kingdom of Great Britain and Northern Ireland","United Kingdom",1,1,1,1,NA,NA,NA
+"Guernsey","United Kingdom",1,1,1,1,NA,NA,NA
+"Isle of Man","United Kingdom",1,0,0,1,1,1,1
+"Jersey","United Kingdom",1,1,1,1,NA,NA,NA
+"Northern Ireland","United Kingdom",1,1,1,1,NA,1,NA
+"Mexico","Mexico",0.5,0.5,0.5,0.5,0.5,0.5,1
+"Aguascalientes","Mexico",1,0,0,0,0,0,1
+"Baja California","Mexico",1,0,0,0,0,0,1
+"Baja California Sur","Mexico",1,0,0,1,0,0,1
+"Campeche","Mexico",0,0,0,0,0,0,1
+"Chiapas","Mexico",1,0,0,1,0,0,1
+"Chihuahua","Mexico",0,0,0,0,0,0,1
+"Coahuila","Mexico",NA,0,0,1,0,0,1
+"Colima","Mexico",1,0,0,1,0,0,1
+"Durango","Mexico",1,0,0,0,0,0,1
+"Estado de Mexico","Mexico",1,0,0,1,0,0,1
+"Guanajuato","Mexico",0,0,0,0,0,0,1
+"Guerrero","Mexico",0,0,0,0,0,0,1
+"Hidalgo","Mexico",0,1,1,1,0,0,1
+"Jalisco","Mexico",1,0,0,0,0,0,1
+"Mexico City","Mexico",1,1,1,0,0,0,1
+"Michoacan","Mexico",0,0,0,1,1,0,1
+"Morelos","Mexico",1,0,0,1,0,0,1
+"Nayarit","Mexico",1,0,0,0,0,0,1
+"Nuevo Leon","Mexico",1,0,0,0,0,0,1
+"Oaxaca","Mexico",1,0,0,1,0,0,1
+"Puebla","Mexico",1,0,0,1,0,0,1
+"Querétaro","Mexico",0,0,0,0,0,0,1
+"Quintana Roo","Mexico",1,0,0,1,0,0,1
+"San Luis Potosi","Mexico",1,0,0,0,0,0,1
+"Sinaloa","Mexico",1,0,0,0,0,0,1
+"Sonora","Mexico",1,0,0,0,0,0,1
+"Tabasco","Mexico",1,0,0,0,0,0,1
+"Tamaulipas","Mexico",1,0,0,0,0,0,1
+"Tlaxcala","Mexico",1,0,0,1,0,0,1
+"Veracruz","Mexico",1,0,0,1,0,0,1
+"Yucatan","Mexico",1,0,0,1,0,0,1
+"Zacatecas","Mexico",1,0,0,0,0,0,1
+"Canada","Canada",NA,NA,NA,NA,NA,1,NA
+"Alberta","Canada",NA,NA,1,1,NA,1,NA
+"British Columbia","Canada",NA,NA,NA,NA,NA,1,NA
+"Manitoba","Canada",NA,NA,NA,NA,NA,1,NA
+"New Brunswick","Canada",NA,NA,NA,NA,NA,1,NA
+"Newfoundland and Labrador","Canada",NA,NA,NA,NA,NA,1,NA
+"Northwest Territories","Canada",NA,NA,NA,NA,NA,1,NA
+"Nova Scotia","Canada",NA,NA,NA,NA,NA,1,NA
+"Nunavut","Canada",NA,NA,NA,NA,NA,1,NA
+"Ontario","Canada",NA,NA,NA,NA,NA,1,NA
+"Prince Edward Island","Canada",NA,NA,NA,NA,NA,1,NA
+"Quebec","Canada",NA,NA,NA,NA,NA,1,NA
+"Australia","Australia",0.5,0.5,0.5,0.5,0.5,0.5,NA
+"Capital Territory","Australia",NA,NA,NA,NA,NA,1,NA
+"New South Wales","Australia",1,NA,NA,NA,NA,1,NA
+"Northern Territory","Australia",1,NA,NA,NA,NA,NA,NA
+"Queensland","Australia",1,NA,NA,NA,NA,1,NA
+"South Australia","Australia",1,1,1,1,NA,1,NA
+"Tasmania","Australia",NA,1,1,NA,NA,1,NA
+"Victoria","Australia",NA,NA,NA,NA,NA,1,NA
+"Western Australia","Australia",0,1,1,1,1,0,0
