@@ -405,10 +405,17 @@ df <- df %>% mutate(flex_binary_score=case_when(flexibility_score>=4~1,flexibili
 
 
 
-df1 <- df %>% select(year, country_code, flexibility_score, gdp, primary_completion)
+#selecting columns for our causal models
+df1 <- df %>% select(-c(female_literacy, mortality_rate, primary_completion)) %>% drop_na()
+write.csv(df1,"Data/final_dataset.csv", row.names = FALSE)
 
+## #############################################################################
+## 
+## 6. Exploration plots
+##
+## ############################################################################
 ggplot(data=df, aes(x=year, y=flexibility_score)) +
   geom_point(aes(size=gdp))
 
-ggplot(data=df, aes(x=gdp, y=flexibility_score, color=period)) +
+ggplot(data=df, aes(x=gdp, y=flexibility_score, color=primary_completion)) +
   geom_point(alpha=0.7)
