@@ -259,6 +259,24 @@ We also conducted added "female primary education completion" as a control varia
 
 * Heterogeinity of effects
 
+Following the approach of @Aronov2016, we have reproduced the weights that multiple regression analysis uses to caluclate the effects by 1. regressing the confounders and the fixed effects for countries in the analysis and the time period on the abortion law flexibility (measured as a score from 0 to 7) 2. squaring the weights.
+
+As expected, our analysis showed that countries have different weights in the calculated effect. The nominal sample, the full population of the countries that have data for both the treatment and the outcome, is shown on Figure Xa and it includes almost all countries in the world. However, the effective sample, defined here as the countries that contribute over half (51%) of the weight used to construct the estimate of the abortion law flexibility on MMR, consists of only 14 countries (Figure Xb).
+
+```{r, echo=FALSE,out.width="49%",out.height="49%",fig.show='hold', fig.align='center', fig.cap="Figure X. a) Nominal sample - all the countries in the analysis b) Effective sample - countries that contribute over 51% of the effect of abortion law flexibility on MMR"}
+
+knitr::include_graphics(c("Figures/full_sample.png","Figures/effective_sample.png"))
+```
+
+
+As expected, countries with more data and higher variability in abortion law flexibility and MMR contribute more to the effect, as can be seen from the Figure X below.
+
+```{r, echo=FALSE,out.width="49%",out.height="49%",fig.show='hold', fig.align='center', fig.cap="Figure X. a) Countries that contribute the most to the effect of abortion law flexibility on MMR vs. b) Countries that contribute the least"}
+
+knitr::include_graphics(c("Figures/most.png","Figures/least.png"))
+```
+
+
 * G-separation ATE, ATU, ATT
 
 
