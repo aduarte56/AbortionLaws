@@ -233,13 +233,21 @@ Finally, the third requirement is the stable unit treatment value assumption (SU
 ###Heterogeinity of effects
 
 ###G-separation
-G-separation or G computation is a method that enables the unbiased estimation of marginal causal effects by using counterfactuals. It thus responds to the rupture of two of the main assumptions discussed above: the missingness of counterfactuals on observational data (because it is impossible to observe participants under both treatment and non-treatment) and heterogeneity of effects (). 
 
-"Once estimated, the Q-model (a linear regression of the outcome on the exposure and covariates) is used to predict counterfactual outcomes for each observation under each exposure regimen. This is accomplished by plugging $a=1$ and then subsequently $a=0$ into the regression fit to obtain a predicted outcome under these 2 settings. The counterfactual
-outcome associated with exposure intervention a can be represented as $Y_a$. Because we have a dichotomous treatment setting, the counterfactual outcomes correspond to
-$Y_1$ for exposed and $Y_0$ for unexposed. Generating counterfactual outcomes for each observation in under exposed and unexposed settings furnishes the investigator with a full data set that is free of confounding under causal assumptions and resolves the missing data problem described above."[@snowden2011implementation]
+G-separation is a method that enables the unbiased estimation of marginal causal effects by using counterfactuals. It  responds to two of the effect identification issues encountered in observational studies: the missingness of counterfactuals (because it is impossible to observe participants under both treatment and non-treatment) and heterogeneity of effects (variation of effects across individuals).[@snowden2011implementation]
 
+G-separation calculation has two steps: 
+1. Fitting a Q-model, that is, a traditional regression of the outcome on the treatment and  relevant covariates.  In our case, we used the traditional regression fitted in the original paper as Q model: 
 
+$$
+MMR=\beta_0 + \beta_1 L+\beta_2 GDP +\beta_3 P+ \beta_4 C
+$$
+In the formula, P and C respectively account for 3 year periods and the country specific effects. 
+2. The Q-model is used to predict counterfactual outcomes for all the observations under both treatment settings (L=1 for flexible abortion laws and L=0 if not). More specifically, we plugged both treatment regimes in the the regression fit and obtained two predicted outcomes: $Y_{L=0}=Y_0$ for the unexposed and $Y_{L=1}=Y_1$ for the exposed. Both outcomes are then used to calculate the average $Y_1-Y_0$, which corresponds to the ATE.
+
+With this intervention, the missingness problem is resolved because counterfactual outcomes for each observation are generated. G-separation thus provides a full dataset "free of confounding under causal assumptions."[@snowden2011implementation]. 
+
+Furthermore, G-separation allows for the calculation of both ATT and ATU by restricting the ATE estimation to the treated and the untreated respectively[@Wang]. 
 
 # Analysis
 Our empirical exploration had two main objectives: 1. to reproduce the methodology of the original paper with updated data on the same, 2. to compare the result thus obtained with some other methods that address the assumptions not met by the original paper. 
