@@ -16,13 +16,15 @@ library(ggdag)
 
 \newcommand{\indep}{\perp \!\!\! \perp}
 
+Word count: app. 4637 words
+
 ## Background
 
-Abortion law and the negative consequences of the lack of safe abortions are highly contentious policy issues that have been making headlines this year. Further, the [Sustainable Development Goal indicator 3.1](https://www.who.int/data/gho/indicator-metadata-registry/imr-details/26) of the United Nations to reduce Maternal Death to less than 70 per 100000 life birth by 2030 relies on access to safe and legal abortions. In the paper we are analysing, the authors are testing whether and, if so, to what extent abortion law as a proxy for access to safe abortions causally affects maternal mortality rates in over 160 countries around the globe. Establishing a causal relation could strengthen the implementation of abortion liberalisation policy. This is especially needed in a time where several states already withdrew or are withdrawing access to safe abortions on many grounds, such as [Poland](https://www.amnesty.org/en/latest/news/2021/10/poland-a-year-on-abortion-ruling-harms-women/) and the [USA](https://www.euronews.com/2022/05/03/us-supreme-court-moving-to-overturn-key-abortion-rights-law-says-leaked-report). While on the other hand there are developments like, for instance, in [France](https://www.hrw.org/news/2022/03/01/france-expands-abortion-access-two-key-moves) to expand abortion rights in 2022. So does abortion law flexibility cause maternal mortality? We will be taking a close critical look at a paper that tries to establish exactly that and also run our own data analysis to address this question.
+Abortion law and the negative consequences of the lack of safe abortions are highly contentious policy issues that have been making headlines this year. Further, the [Sustainable Development Goal indicator 3.1](https://www.who.int/data/gho/indicator-metadata-registry/imr-details/26) of the United Nations to reduce Maternal Death to less than 70 per 100,000 live births by 2030 relies on access to safe and legal abortions. In the paper we are analysing, the authors are testing whether and, if so, to what extent abortion law as a proxy for access to safe abortions causally affects maternal mortality rates in over 160 countries around the globe. Establishing a causal relation could strengthen the implementation of abortion liberalisation policy. This is especially needed in a time where several states already withdrew or are withdrawing access to safe abortions on many grounds, such as [Poland](https://www.amnesty.org/en/latest/news/2021/10/poland-a-year-on-abortion-ruling-harms-women/) and the [USA](https://www.euronews.com/2022/05/03/us-supreme-court-moving-to-overturn-key-abortion-rights-law-says-leaked-report). Conversly, some other countries, for instance, [France](https://www.hrw.org/news/2022/03/01/france-expands-abortion-access-two-key-moves) are planning to expand abortion rights in 2022. So does abortion law flexibility cause maternal mortality? We will be taking a close critical look at a paper that tries to establish exactly that and also run our own data analysis to address this question.
 
 ## Description of the original paper
 
-In "Abortion laws reform may reduce maternal mortality: an ecological study in 162 countries," @Latt2019 present the results of a study that aims to assess whether maternal mortality is affected by the flexibility of abortion laws. Abortion law flexibility was measured as a sum of the number of reasons for which abortion is legally allowed (ranging from 0 to 7) and was included in models as both an ordinal variable and a binary variable (inflexible vs. flexible abortion laws). Abortion laws were considered inflexible if there were less than 3 legal grounds for abortion. Maternal mortality ratio (MMR) was measured as the number of maternal deaths per 100,000 live births. Authors used fixed effects linear regression models to estimate the relationship between abortion law flexibility and MMR, while controlling for GDP per capita and time in five-year intervals. Additional analysis included also female primary education completion as a control variable as it had over 50% of missing data; however, results did not change. Results indicated that maternal deaths reduce by 45 per 100,000 live births (95% CI: -64, -26) with flexible abortion laws. The authors conclude that abortion law reform in countries with inflexible abortion laws may reduce maternal mortality.    
+In "Abortion laws reform may reduce maternal mortality: an ecological study in 162 countries," @Latt2019 present the results of a study that aims to assess whether maternal mortality is affected by the flexibility of abortion laws. Abortion law flexibility was measured as a sum of the number of reasons for which abortion is legally allowed (ranging from 0 to 7) and was included in models as both an ordinal variable and a binary variable (inflexible vs. flexible abortion laws). Abortion laws were considered inflexible if there were less than 3 legal grounds for abortion. Maternal mortality ratio (MMR) was measured as the number of maternal deaths per 100,000 live births. Authors used fixed effects linear regression models to estimate the relationship between abortion law flexibility and MMR, while controlling for GDP per capita, country variability and time. Additional analysis included female primary education completion as a potential control variable that was not included in the main model as it had over 50% of missing data; however, results did not significantly change. Results indicated that maternal deaths reduce by 45 per 100,000 live births (95% CI: -64, -26) with flexible abortion laws. The authors conclude that abortion law reform in countries with inflexible abortion laws may reduce maternal mortality.    
 
 
 ##  Methodology
@@ -31,13 +33,13 @@ In "Abortion laws reform may reduce maternal mortality: an ecological study in 1
 
 Theoretical estimand is a key part of a research question, as it describes the quantity of interest independently of statistical models and clearly describes the research goal [@Lundberg2021]. In the current paper, the theorethical estimand was not specifically stated; however, we tried to deduce the desired estimand from the research goal and the estimation strategy authors used.
 
-The authors state that they aim to “estimate the association between the flexibility of abortion laws and maternal mortality at a country level [between 1985 and 2013]” [@Latt2019, pg. 2]. Furthermore, they estimated the model using linear regression, and the quantity they have estimated was the regression coefficient of MMR on flexibility of the law. Therefore, we believe that the authors wanted to assess the average treatment effect (ATE), that is, the difference in the number of maternal deaths that would occur within a country if abortion law was flexible ($MMR_i$ = 1) versus inflexible ($MMR_i$ = 0):
+The authors state that they aim to “estimate the association between the flexibility of abortion laws and maternal mortality at a country level [between 1985 and 2013]” [@Latt2019, pg. 2]. Furthermore, they estimated the model using linear regression, and the quantity they have estimated was the regression coefficient of MMR on the abortion law flexibility. Therefore, we believe that the authors wanted to assess the average treatment effect (ATE), that is, the difference in the number of maternal deaths that would occur within a country if abortion law was flexible versus inflexible:
 
 $$
 ATE = \frac{1}{n}\sum_{i=1}^{n}(MMR_i^1 - MMR_i^0) = \frac{1}{n}\sum_{i=1}^{n}\Delta MMR_i = \mathbb{E} [\Delta MMR]
 $$
 
-This estimand looks at counterfactual outcomes for all countries, regardless of the fact that the particular country would in reality receive treatment or not. Country $i$'s MMR when abortion laws are flexible is denoted as $MMR_i^{(L=1)}$ or shortly $MMR_i^{(1)}$, and as $MMR_i^{(L=0)}$ or $MMR_i^{(0)}$ when abortion laws are inflexible. Individual causal effect for the country $i$ is then the difference between mortality when abortion laws are flexible vs. when they are inflexible, or $ΔMMR_i = MMR_i^{(1)} - MMR_i^{(0)}$. Individual effects averaged across all of the countries in the world would then give the wanted causal quantity. This is equal to the expectation of the effect of flexible abortion laws on MMR of a randomly selected country. 
+This estimand looks at counterfactual outcomes for all countries, regardless of whether or not a particular country would in reality receive the treatment. Country $i$'s MMR when abortion laws are flexible is denoted as $MMR_i^{(L=1)}$ or shortly $MMR_i^{(1)}$, and as $MMR_i^{(L=0)}$ or $MMR_i^{(0)}$ when abortion laws are inflexible. Individual causal effect for the country $i$ is then the difference between mortality when abortion laws are flexible vs. when they are inflexible, or $ΔMMR_i = MMR_i^{(1)} - MMR_i^{(0)}$. Individual effects averaged across all of the countries in the world would then give the wanted causal quantity. This is equal to the expectation of the effect of flexible abortion laws on MMR of a randomly selected country. 
 
 As ATE reflects the effect of the treatment for the entire study population, it can be particularly useful for scoping the benefit of population-wide policies. However, as there will be inevitable self-selection to treatment in case of abortion policies -- some countries will choose to have more flexible laws and some will choose less flexible laws -- there are other estimands that could potentially be interesting for researchers in this particular case.
 
@@ -91,7 +93,7 @@ This model has several practical implications:
 * Female primary education completion and GDP confound the Law &rarr; MMR relationship;
 * Because Female primary education and GDP are measured, then $MMR^{(1)}, MMR^{(0)} \indep Law \mid Female \ primary \ education, GDP$.
 
-However, there are several potential identification issues that could influence the possibility to estimate the effect of abortion law flexibility on MMR, namely: unmeasured confounding and (non-random) data missingness. These are discussed in detail below.
+However, there are several potential identification issues that could influence the possibility to estimate the effect of abortion law flexibility on MMR, namely: unmeasured confounding and (non-random) data missingness. These are discussed in more detail below.
 
 **Unmeasured confounding**
 
@@ -121,13 +123,17 @@ Given that *unmeasured confounding* is a crucial issue in effect identification,
 
 * Party in power politically: The political convictions and policies of political parties in power most likely will influence the abortion law. However, it is unlikely that it will directly cause mortality. Therefore, it is not a confounder in this model.
 
-* State of human rights and gender equality: State of human rights and gender equality in a country could influence the abortion law flexibility and female primary education completion. However, we think it is unlikely that they will impact MMR; therefore, it would not be necessary to control for them, as long as female primary education is controlled for. 
+* State of human rights and gender equality: State of human rights and gender equality in a country could influence the abortion law flexibility and female primary education completion. However, we think it is unlikely that they will impact MMR; therefore, it would not be necessary to control for them, as long as female primary education is controlled for.
+
+To check the robustness of the findings authors could have examined how big the unobserved confounding would have to be to cancel the estimated causal effect. Sensitivity analysis has 2 essential parts to it: 1) describing the type of unobserved confounders such as religious institutions, contraceptive prevalence, fertility rate, 2) describing the plausibility that problematic confounding might exist based on research design, expert knowledge and data-generating process.
+  
+Generally, sensitivity analysis is still underutilized in social science and policy research papers [@cinelli2020making, p. 40]. However, it is a very useful tool to test robustness of findings, i.e. how sensitive my effects and effect sizes are to other variables that influence the treatment or outcome studied. Therefore, we are proposing to add a sensitivity analysis to the research design and also apply it in the second part of our report. This method gives us two insights: 1) the robustness value: how robust the coefficient is to confounders influencing treatment and outcome and 2) the proportion of the outcome uniquely explained by the treatment and how strong a confounder would have to be to eliminate the effect of the treatment [@cinelli2020making, pp.40/41].
 
 **Missing data**
 
-(Non-random) Data missingness is also a factor that can affect the possibility of accurately identifying causal effects.In the original paper, Hernan et al. are outlining why data is missing. Because restricting the analysis on countries where data are complete would bias it, the authors still include countries with missing data on female literacy [@HernanSelection, p. 5]. However, female primary completion is only available for 50 percent of countries and female literacy only for 10 percent. This missingness of data could introduce selection bias to the specific analysis the auhtors did in the original paper. 
+(Non-random) Data missingness is also a factor that can affect the possibility of accurately identifying causal effects [@HernanSelection]. Because restricting the analysis on countries where data are complete would bias it, the authors still include countries with missing data on female literacy, another possible confounder [@Latt2019, p. 5]. However, female primary completion is only available for 50 percent of countries and female literacy only for 10 percent. This missingness of data could introduce selection bias to the specific analysis the authors did in the original paper. 
 
-Comparing the rate of MMR and flexibility score for countries with recorded female primary completion vs countries without recorded female primary completion levels, we could check whether there is a selection bias and then generalization of effects of this model would not be possible. If we suppose that female literacy is a collider and a confounder, we cannot condition on it without creating selection bias [@elwert2014endogenous, p.38]. As this done in the baseline paper, we would have to select strategies to correct this. Otherwise, it would stay d-connected, so statistically dependent. 
+Comparing the rate of MMR and flexibility score for countries with recorded female primary completion vs countries without recorded female primary completion levels, we could check whether there is a selection bias and then generalization of effects of this model would not be possible. If we suppose that female literacy is a collider and a confounder, we cannot condition on it without creating selection bias [@elwert2014endogenous, p.38]. As this done in the current paper, we would have to select strategies to correct this. Otherwise, it would stay d-connected, so statistically dependent. 
 
 As the likely selection bias in this study cannot be avoided due to the limitations on data availability, it needs to be corrected if possible. In the analysis this could be achieved through generalization of inverse probability weighting [@HernanSelection, p. 7]. For this, however we would need to categorize developing countries in one group where some have recorded female literacy which then gets multiplied by the number of countries not considered due to missing data. Inverse probability weighting would work as the score for female literacy is not zero for the countries where it is not recorded.  However, a lot of assumptions would need to be made to apply this method. The assumption that the *filler-country* would be close enough to the *unobserved countries* is by nature untestable and therefore it is a strong assumption.
 
@@ -144,11 +150,10 @@ knitr::include_graphics(c("Figures/Dag_model1.png","Figures/Dag_model2.png"))
 
 However, it is also possible that female literacy has no effect on abortion law and actually only has an effect on the outcome, MMR. MMR is a common effect of female literacy and flexibility score (abortion laws). Then instead of being a causal effect of abortion law, female primary completion would be an associative risk factor[@HernanSelection, p.3]. In this case the only connection would be if we conditioned on MMR we would create a spurious relation however the effect of literacy and law on each other would be zero. Yet, we do not condition on the outcome hence no spurious relationship should be created. 
 
-<center>
+```{r, echo=FALSE,out.width="49%",out.height="49%", fig.align='center', fig.cap="Figure 4.:Female literacy's effect on Maternal mortality ratio"}
 
-![Figure 4.:Female literacy's effect on Maternal mortality ratio](Figures/Dag_model3.png)
-
-</center>
+knitr::include_graphics("Figures/Dag_model3.png")
+```
 
 However, it is difficult to disentangle the relationship as lower female literacy will also lower access to safe abortions regardless of the flexibility of the law, as women are likely less informed about their health care options which in turn increases female mortality.
 
@@ -156,25 +161,10 @@ Testing for those different possible scenarios would be possible with sensitivit
 
 A possible model for future research could be:
 
-![Figure 5.: Suggested causal model for future research ](Figures/Dag_model4.png)
+```{r, echo=FALSE,out.width="60%",out.height="60%", fig.align='center', fig.cap="Figure 5.: Suggested causal model for future research"}
 
-* Sensitivity Analysis
-
-In the sensitivity analysis we would check which part of the total effect can be explained by the abortion laws and which can be explained by female literacy. Additionally, we check how much the effects would need to change to cancel one another.For instance, the effect for flexibility score alone we can check when we control (block) the primary completion rate.
-Sensitivity analysis has 2 essential parts to it:
-1) describing the type of unobserved confounders
-Unmeasured variables: religious institutions, contraceptive prevalence, fertility rate 
-2) plausibility that problematic confounding might exist
-	Based on 
-	*research design, 
-  *expert knowledge and 
-  *data-generating process
-  
-Generally, sensitivity analysis is still underutilized in social science and policy research papers [@cinelli2020making, p. 40]. However, it is a very useful tool to test robustness of findings, i.e. how sensitive my effects and effect sizes are to other variables that influence the treatment or outcome studied. Therefore, we are proposing to add a sensitivity analysis to the research design and also apply it in the second part of our report. This method gives us two insights: 1) the robustness value: how robust the coefficient is to confounders influencing treatment and outcome and 2) the proportion of the outcome uniquely explained by the treatment and how strong a confounder would have to be to eliminate the effect of the treatment[@cinelli2020making, pp.40/41].
-
-
-
-
+knitr::include_graphics("Figures/Dag_model4.png")
+```
 
 ### Empirical estimation
 
@@ -187,11 +177,7 @@ In the formula, P and C respectively account for 3 year periods and the country 
 
 This approach has been called "the workhorse model" used by researchers to estimate causal effects [@Aronov2016]. What fixed effects models do is that they remove all the unmeasured but group-specific confounding effects related to the unit that is being controlled. Controlling for unobserved counfounding related to countries and time is a common approach in studies such as these. However, this approach can have subtle consequences that limit the generalizibility of the findings.
 
-* Heterogeneous effects
-
-@Aronov2016 showed that multiple regression estimates are actually weighted averages of unit-specific contributions. In cases when treatment effects are heterogeneous, in the sense that the effect of abortion law flexibility is not the same for every country, $\beta_L$ will not reflect ATE. Rather, it will be more strongly influenced by units that have more variability: many observations, large variations in abortion law flexibility and MMR, and that are hard to predict from country and time fixed effects and other controls (GDP, female primary education completion). This means that the estimated effect will be actually valid for a *sub-sample* of the population that is being studied. @Aronov2016 suggest that the *effective* sample, the sub-sample that has the strongest weights in the analysis should be reported explicitly so that it is more clear to which cases the effects generalise.    
-
-* Missingness of counterfactuals.
+@Aronov2016 showed that multiple regression estimates are actually weighted averages of unit-specific contributions. In cases when treatment effects are heterogeneous, for example if the effect of abortion law flexibility is not the same for every country in the current paper, $\beta_L$ will not reflect ATE. Rather, it will be more strongly influenced by units that have more variability: many observations, large variations in abortion law flexibility and MMR, and that are hard to predict from country and time fixed effects and other controls (GDP, female primary education completion). This means that the estimated effect will be actually valid for a *sub-sample* of the population that is being studied. @Aronov2016 suggest that the *effective* sample, the sub-sample that has the strongest weights in the analysis should be reported explicitly so that it is more clear to which cases the effects generalise.    
 
 Even by controlling for the heterogeneous effects of treatment, there is still the lack of counterfactual problem that can become an issue when estimating causal effects in observational studies (because it is impossible to observe participants under both treatment and non-treatment). The G-separation method proposed by @snowden2011implementation addresses this issue by generating counterfactual outcomes for each observation and providing a full dataset "free of confounding under causal assumptions", which allows to isolate easily isolate causal effects (direct or heterogeneous)[@snowden2011implementation].
 
@@ -210,8 +196,6 @@ As in the original dataset, the Maternal mortality ratio (MMR) was measured as t
 
 Unlike the authors, our binary flexibility of abortion policies variable is slightly more stringent: since the median of the abortion grounds calculated every 3 years is approximately 4 in average, we determined that abortion laws are inflexible if countries allow for less than 4 legal grounds for abortion.
 
-*[Add table showing median per period.]*
-
 **Regression ATE**
 
 In the first part of our exploration, we followed the methodology of the original paper and used fixed effects linear regression models to estimate the relationship between abortion law flexibility and MMR. We controlled for GDP per capita, time in three-year intervals, and country-specific effects through a factor country-name variable. According to our results, flexible abortion laws reduce maternal deaths by 57 per 100.000 live births. This result is close enough to the original result, which found that maternal deaths reduce by 45 per 100,000 live births (95% CI: -64, -26) with flexible abortion laws. 
@@ -221,10 +205,10 @@ We also conducted added "female primary education completion" as a control varia
 
 Following the approach of @Aronov2016, we have reproduced the weights that multiple regression analysis use to calculate the effects by: 
 
-1. regressing the confounders and the fixed effects for countries in the analysis (without the treatment) and the time period on the abortion law flexibility score (treatment measured as a score from 0 to 7) 
+1. regressing the GDP and the fixed effects for countries and time period on the abortion law flexibility score (measured as a score from 0 to 7); 
 2. squaring the weights.
 
-As expected, our analysis showed that countries have different weights in the calculated effect. The nominal sample, the full population of the countries that have data for both the treatment and the outcome, is shown on Figure 6a and it includes almost all countries in the world. However, the effective sample, defined here as the countries that contribute over half (51%) of the weight used to construct the estimate of the abortion law flexibility on MMR, consists of only 14 countries (Figure 6b).
+As expected, our analysis showed that countries have different weights in the estimated causal effect. The nominal sample, the full population of the countries that have data for both the treatment and the outcome, is shown on Figure 6a and it includes almost all countries in the world. However, the effective sample, defined here as the countries that contribute over half (51%) of the weight used to construct the estimate of the abortion law flexibility on MMR, consists of only 14 countries (Figure 6b).
 
 ```{r, echo=FALSE,out.width="49%",out.height="49%",fig.show='hold', fig.align='center', fig.cap="Figure 6. a) Nominal sample - all the countries in the analysis b) Effective sample - countries that contribute over 51% of the effect of abortion law flexibility on MMR"}
 
@@ -252,7 +236,7 @@ The latter would mean that the potential impact of flexibility on abortion polic
 
 **Using sensitivity analysis as an approach to unobserved confounding**
 
-Finally, we conducted a sensitivity analysis to estimate the fragility of our the effect of interest against unobserved counfounders in our model[@cinelli2020making]. These potential confounders are not usually considered in  traditional regression estimates to avoid bias, but they might substantively change our conclusions. 
+Finally, we conducted a sensitivity analysis to estimate the robustness of the effect of interest against unobserved counfounders in our model [@cinelli2020making]. These potential confounders are not usually considered in  traditional regression estimates to avoid bias, but they might substantively change our conclusions. 
 
 We then run the sensitivity analysis proposed by @cinelli2020making using "female primary completion levels" and gdp as benchmark covariates for two models: 
 1. The one used by the original paper (and used by us for the g-separation analysis).
@@ -263,25 +247,25 @@ The robustness value of the sensitivity analysis allows us to quantify the amoun
 But how strong must they be to completely remove the effect in both models? The following countour plots show that, while gdp doesn't have a strong effect on MMR, in the second model a counfounder three times as strong as primary completion would remove the causal effect of interest. This means that even if the effect of primary completion levels appears to be small, other strong confounders as the ones listed above might easily reduce the effect of interest of our study.
 
 
-```{r, echo=FALSE,out.width="49%",out.height="49%",fig.show='hold', fig.align='center', fig.cap="Figure X. a) Countour plot for the sensitivity analysis of model 2 using primary completion level as benchmark confounder vs. b) Countour plot for the sensitivity analysis of model 1 using gdp as benchmark confounder"}
+```{r, echo=FALSE,out.width="49%",out.height="49%",fig.show='hold', fig.align='center', fig.cap="Figure 8. a) Countour plot for the sensitivity analysis of model 2 using primary completion level as benchmark confounder vs. b) Countour plot for the sensitivity analysis of model 1 using gdp as benchmark confounder"}
 
 knitr::include_graphics(c("Figures/primary.sensitivity.png","Figures/primary.sensitivity.png"))
 ```
 
 
 ## Conclusion 
-The policy conclusion the original paper draws is justified. However, we could expand upon the methodology to get a more precise result and consider possible models as the limitation of the approach is not sufficiently justified in their paper. There are several ways to amend or extend the original research design. We presented suggestions in the theoretical part of our report like applying sensitivity analysis and accounting for the heterogeneity of effects. We generated partial insights with our own data analysis. The causal relation between abortion law and maternal mortality ratios could be established. However, the proportion of the effect remains to be studied with an extended methodological toolbox.
+The policy conclusion the original paper draws is justified. However, we could expand upon the methodology to get a more precise result and consider possible models as the limitation of the approach is not sufficiently justified in their paper. There are several ways to amend or extend the original research design. We presented suggestions in the theoretical part of our report like applying sensitivity analysis and accounting for the heterogeneity of effects. We generated partial insights with our own data analysis. The causal relation between abortion law and maternal mortality ratios could be established. However, the strength of the effect remains to be studied with an extended methodological toolbox.
 
 
 ## Contributions
 
 Our analysis can be found in the following github link: [Abortion Laws Repository](https://github.com/aduarte56/AbortionLaws)
 
-We worked together as a team where we all worked on all parts and engaged with our colleagues' ideas through out. Each of us took the lead on parts of the report as detailed below:
+We worked together as a team on all parts of the paper and engaged with our colleagues' ideas throughout. Each of us took the lead on parts of the report as detailed below:
 
-* Helena Bakic : Empirical estimation,Identification, Heterogeinity of effects, Analysis
-* Anna-Lisa Wirth (213286@mds.hertie-schoo.org) : Background, Unmeasured Confounding, Missing Data, Sensitivity Analysis, Analysis and Conclusion 
-* Ángela Duarte Pardo : Data Cleaning, G-separation, Methodology, Modelling and Analysis
+* Helena Bakic (bakic.helena@outlook.com): Empirical estimation, Identification, Heterogeinity of effects, Analysis
+* Anna-Lisa Wirth (213286@mds.hertie-schoo.org): Background, Unmeasured Confounding, Missing Data, Sensitivity Analysis, Analysis and Conclusion 
+* Ángela Duarte Pardo: Data Cleaning, G-separation, Methodology, Modelling and Analysis
 
 ## References
 
