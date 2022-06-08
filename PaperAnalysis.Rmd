@@ -216,23 +216,15 @@ Generally, sensitivity analysis is still underutilized in social science and pol
 
 Hernan et al. are outlining in their paper why data is missing, to restrict the analysis on countries where data are complete would bias it. Countries with missing data on female literacy are still included {@10.2307/20485961, p. 5}. Female primary completion is only available for 50 percent of countries and female literacy only for 10 percent. This missingness of data introduces selection bias to this specific analysis the auhtors did in the original paper. As the likely selection bias in this study cannot be avoided due to the limitations on data availability it needs to be corrected if possible, in the analysis {@10.2307/20485961, p. 7} this could be achieved through generalization of inverse probability weighting. For this however we would need to categorize developing countries in one group where some have recorded female literacy which then gets multiplied by the number of countries not considered due to missing data. Inverse probability weighting would work as the score for female literacy is not zero for the countries where it is not recorded.  However, a lot of assumptions would need to be made to apply this method. The assumption that the filler-country would be close enough to the unobserved countries is by nature untestable and therefor it is a strong assumption.
 
-### Positivity assumption
-
-?
-The second assumption is that of positivity, meaning that all units of analysis should have a nonzero probability of receiving either treatment.
-
-### SUTVA
-
-?
-Finally, the third requirement is the stable unit treatment value assumption (SUTVA), meaning that there are no unmeasured versions of treatment and that the treatment status of any other unit does not affect other unit's outcomes. 
-
-
-
 ## Empirical estimation
 
-###Heterogeinity of effects
+To estimate the effects of Abortion law flexibility on MMR, the authors of the paper fitted a fixed effects multiple regression model, in which they control for GDP, time, and countries, while trying to estimate the regression slope of flexible abortion law as a causal effect that is being studied:
 
-###G-separation
+[move Angelas equation here?]
+
+This approach has been called "the workhorse model" used by researchers to estimate causal effects [@Aronov2016]. What fixed effects models do is that they remove all the unmeasured but group-specific confounding effects related to the unit that is being controlled. Controlling for unobserved counfounding related to countries and time is a common approach in studies such as these. However, this approach can have subtle consequences that limit the generalizibility of the findings.
+
+@Aronov2016 showed that multiple regression estimates are actually weighted averages of unit-specific contributions. In cases when treatment effects are heterogeneous, in the sense that the effect of abortion law flexibility is not the same for every country, $\beta_L$ will not reflect ATE. Rather, it will be more strongly influenced by units that have more variability: many observations, large variations in abortion law flexibility and MMR, and that are hard to predict from country and time fixed effects and other controls (GDP, female primary education completion). This means that the estimated effect will be actually valid for a *sub-sample* of the population that is being studied. @Aronov2016 suggest that the *effective* sample, the sub-sample that has the strongest weights in the analysis should be reported explicitly so that it is more clear to which cases the effects generalise.    
 
 G-separation is a method that enables the unbiased estimation of marginal causal effects by using counterfactuals. It  responds to two of the effect identification issues encountered in observational studies: the missingness of counterfactuals (because it is impossible to observe participants under both treatment and non-treatment) and heterogeneity of effects (variation of effects across individuals).[@snowden2011implementation]
 
