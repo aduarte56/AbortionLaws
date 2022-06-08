@@ -29,7 +29,7 @@ In "Abortion laws reform may reduce maternal mortality: an ecological study in 1
 
 ##  Methodology
 
-### Theorethical estimands
+### Theoretical estimands
 
 Theoretical estimand is a key part of a research question, as it describes the quantity of interest independently of statistical models and clearly describes the research goal [@Lundberg2021]. In the current paper, the theorethical estimand was not specifically stated; however, we tried to deduce the desired estimand from the research goal and the estimation strategy authors used.
 
@@ -263,9 +263,9 @@ Our analysis can be found in the following github link: [Abortion Laws Repositor
 
 We worked together as a team on all parts of the paper and engaged with our colleagues' ideas throughout. Each of us took the lead on parts of the report as detailed below:
 
-* Helena Bakic (bakic.helena@outlook.com): Empirical estimation, Identification, Heterogeinity of effects, Analysis
-* Anna-Lisa Wirth (213286@mds.hertie-schoo.org): Background, Unmeasured Confounding, Missing Data, Sensitivity Analysis, Analysis and Conclusion 
-* Ángela Duarte Pardo: Data Cleaning, G-separation, Methodology, Modelling and Analysis
+* Helena Bakic (bakic.helena@outlook.com): Empirical estimation, Identification, Heterogeneity of effects, Analysis
+* Anna-Lisa Wirth (213286@mds.hertie-school.org): Background, Unmeasured Confounding, Missing Data, Sensitivity Analysis, Analysis and Conclusion 
+* Ángela Duarte Pardo (214566@mds.hertie-school.org): Data Cleaning, G-separation, Methodology, Modelling and Analysis
 
 ## References
 
