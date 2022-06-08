@@ -38,6 +38,8 @@ summary(model)
 model1 <- lm(data=df1, mortality_ratio_17~flex_binary_score+gdp+country_name+period)
 summary(model1)
 
+#Linear regression model: mortality rate on binary flexibility score controlling for 
+#gdp, primary completion, countries and periods
 model2 <- lm(data=df, mortality_ratio_17~flex_binary_score+gdp+primary_completion+country_name+period)
 summary(model2)
 
@@ -51,7 +53,6 @@ summary(model2)
 #______________________________________________________________________________
 
 
-##
 ##Calculating ATE using G-separation
 ## Create predicted Y_A for all observations, sets flex_score=f
 Ypred<-predict(model1)
@@ -65,30 +66,21 @@ Y1<-predict(model1,newdata=df.flex_score1)
 ## Calculate (Y_1 - Y_0) for each individual
 ATE<-Y1-Y0
 
-##Calculating ATT using G-separation
-
+##Including the actual observations for flexibility scores in the dataset
+## to filter treatment settings and calculate ATT and ATU
 df.flex_score0 <- df.flex_score0 %>% mutate(observed_bin_score=df1$flex_binary_score)
 df.flex_score1<- df.flex_score1 %>% mutate(observed_bin_score=df1$flex_binary_score)
 
-df_T0 <- df.flex_score0 %>% filter(observed_bin_score==1) #imputed results for treatment 0 for those who were treated
-#df_T<-df1 %>% filter(flex_binary_score==1)
+#calculating ATT:
+df_T0 <- df.flex_score0 %>% filter(observed_bin_score==1) #imputed treatment 0 among those who were treated
 Y_T0<-predict(model1,newdata=df_T0) # prediction for imputed treatment 0
-#Y_T1<-predict(model1,newdata=df_T)
-ATT<-mean(Y_T0-df_T0$mortality_ratio_17) # difference between prediction and results
+ATT<-mean(df_T0$mortality_ratio_17-Y_T0) # difference between prediction and results
+
 ##Calculating ATU using G-separation
-
-df_U <- df1 %>% filter(flex_binary_score==0)
-df_U1<-transform(df_U, flex_binary_score=1) 
-Y_U0.S1<-predict(model1,newdata=df_U) 
-Y_U.S1<-predict(model1,newdata=df_U1)
-ATU<-Y_U0.S1-Y_U.S1
-
-
-df_T1 <- df.flex_score0 %>% filter(observed_bin_score==0) #imputed results for treatment 0 for those who were treated
-#df_T<-df1 %>% filter(flex_binary_score==1)
-Y_T1<-predict(model1,newdata=df_T1) # prediction for imputed treatment 0
-#Y_T1<-predict(model1,newdata=df_T)
+df_T1 <- df.flex_score0 %>% filter(observed_bin_score==0) #imputed treatment 1 for those who were untreated
+Y_T1<-predict(model1,newdata=df_T1) # prediction for imputed treatment 1
 ATU<-mean(Y_T1-df_T1$mortality_ratio_17)
+
 #------------------------------------------------------------------------------
 # Sensitivity Analysis
 #______________________________________________________________________________
@@ -109,8 +101,10 @@ df.sensitivity <- sensemakr(model = model2,
 summary(df.sensitivity)
 
 plot(df.sensitivity)
+
+
 #------------------------------------------------------------------------------
-# Heterogeneity of effects (lab4)
+# Heterogeneity of effects
 #______________________________________________________________________________
 
 library(tidyverse)
